@@ -19,7 +19,6 @@ CAgentSystem::CAgentSystem(std::string pathname)
 {
 	this->gridmap = nullptr;
 	this->distance = nullptr;
-	
 	std::string	line_string;
 	std::ifstream	file(pathname);
 	std::vector<std::vector<int>> agent_input_pool;
