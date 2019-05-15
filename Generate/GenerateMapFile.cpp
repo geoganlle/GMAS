@@ -6,7 +6,7 @@
 #include "GenerateMAS.h"
 int main()
 {
-	GenerateMap * map=new GenerateMap(20,50);
+	GenerateMap * map=new GenerateMap(10,10);
 	map->RandGenerateMap(0,0.80);
 	map->PrintConsole();
 	map->WriteFile();

@@ -1,6 +1,2 @@
-﻿  GenerateMAS.cpp
-C:\Users\guzhe\Desktop\GMAS\Generate\GenerateMAS.cpp(33): warning C4018: “<”: 有符号/无符号不匹配
-  GenerateMap.cpp
-  GenerateMapFile.cpp
-  正在生成代码...
+﻿  GenerateMapFile.cpp
   GenerateMapFile.vcxproj -> C:\Users\guzhe\Desktop\GMAS\Debug\GenerateMapFile.exe

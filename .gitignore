@@ -6,3 +6,7 @@
 /.vs
 /Debug
 *.txt
+/Generate/Debug
+/GMAS/Debug
+/map
+/mas

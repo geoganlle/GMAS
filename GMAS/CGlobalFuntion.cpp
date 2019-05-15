@@ -32,7 +32,7 @@ vector<int> string_spilt_to_int(const std::string& string_input)
 void test1()
 {
 	//test
-	CGridMap map("../../map/10x10map0.txt");
+	CGridMap map("../map/10x10map0.txt");
 	CBfs a(&stPoint(0, 0), &stPoint(9, 9), &map);
 	cout << "bfs cost " << a.get_soln_cost_int() << endl;
 	CDistance d((&map), false);
@@ -60,7 +60,7 @@ void test1()
 void test2()
 {
 	//system("dir");
-	CAgentSystem mas("../../mas/20x50mas0.txt");
+	CAgentSystem mas("../mas/20x50mas0.txt");
 	mas.run();
 	mas.print_pathpool_to_Console();
 
