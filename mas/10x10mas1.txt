@@ -1,0 +1,9 @@
+# generate agent number6
+# init_point(x,y) goal_point(x,y)
+../../map/10x10map1.txt
+4 2 7 6
+3 0 2 7
+1 3 4 4
+5 1 6 9
+8 8 1 8
+0 8 0 4
