@@ -90,7 +90,7 @@ void GenerateMAS::WriteFile()
 	}
 	__file << "# generate agent number" << int_cached.size()/2<<"\n";
 	__file << "# init_point(x,y) goal_point(x,y)\n";
-	__file << "../"<<gridmap->get_string_map_name()<<"\n";
+	__file <<gridmap->get_string_map_name()<<"\n";
 	for (auto it = int_cached.begin(); it != int_cached.end(); it++) {
 		__file << (*it)%int_dim_x << " " << (*it) / int_dim_x;
 		if ((it - int_cached.begin())%2 == 1) {

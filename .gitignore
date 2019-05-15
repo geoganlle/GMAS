@@ -4,3 +4,5 @@
 
 /.vs/GMAS/v16
 /.vs
+/Debug
+*.txt

@@ -10,7 +10,7 @@ CAgent::CAgent(int agentid_i, stPoint init_i, stPoint goal_i, CGridMap* gridmap_
 		[](const stSearch_Node & node_left, const stSearch_Node & node_right) -> int {
 			return node_left.fn < node_right.fn;
 		});
-	visited.resize(gridmap->);
+	visited.resize(gridmap->getDim().x * gridmap->getDim().y );
 	visited[gridmap->hashpt(&temp.location)]=true;
 
 	search_count = 0;

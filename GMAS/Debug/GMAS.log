@@ -1,4 +1,9 @@
-﻿  CDistance.cpp
+﻿  CAgent.cpp
+C:\Users\guzhe\Desktop\GMAS\GMAS\CAgent.cpp(13): error C2059: 语法错误:“)”
+  CAgentSystem.cpp
+  CBfs.cpp
+  CDistance.cpp
+  CGlobalFuntion.cpp
+  CGridMap.cpp
   GMAS.cpp
   正在生成代码...
-  GMAS.vcxproj -> C:\Users\guzhe\Desktop\GMAS\GMAS\Debug\GMAS.exe
