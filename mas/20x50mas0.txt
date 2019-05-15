@@ -1,9 +1,0 @@
-# generate agent number6
-# init_point(x,y) goal_point(x,y)
-../map/20x50map0.txt
-1 31 2 34
-11 16 15 34
-15 30 11 37
-19 37 9 20
-18 19 9 49
-10 4 7 8
