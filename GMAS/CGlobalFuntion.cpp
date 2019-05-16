@@ -60,7 +60,7 @@ void test1()
 void test2()
 {
 	//system("dir");
-	CAgentSystem mas("../mas/10x10mas0.txt");
+	CAgentSystem mas("../mas/10x10mas2.txt");
 	mas.run();
 	mas.print_pathpool_to_Console();
 

@@ -30,7 +30,7 @@ bool GenerateMAS::RandGenerateAgent()
 		}
 		std::default_random_engine random(static_cast<unsigned int>(time(NULL)));
 		int agent_pos_int_number = (int_agent_number * 2);
-		for (int i = 0; i < int_dim_x * int_dim_y && int_cached.size()< agent_pos_int_number; i++) {//等概率生成n个随机位置
+		for (int i = 0; i < int_dim_x * int_dim_y && static_cast<int>(int_cached.size())< agent_pos_int_number; i++) {//等概率生成n个随机位置
 			std::uniform_int_distribution<int> intdis(i, int_dim_x * int_dim_y - 1);
 			int j = intdis(random);
 			if (i >= 0 && j >= 0 &&

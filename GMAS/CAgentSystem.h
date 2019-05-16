@@ -27,8 +27,9 @@ class CAgentSystem
 	clock_t cost_time;//耗时
 	int cost_expand;//总开销
 	int conflict_num;//冲突数量
-	std::unordered_map <int,std::vector<int>> pathpool;//agentid path
-	std::vector <CAgent*> Agent_pool;
+
+	std::unordered_map <int,std::vector<int>> path_pool;//agentid path
+	std::vector <CAgent*> agent_pool;
 public:
 
 	CAgentSystem(std::string pathname);

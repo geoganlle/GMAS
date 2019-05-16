@@ -4,7 +4,7 @@
 void CAgentSystem::print_pathpool_to_Console()
 {
 	std::cout <<"\n pathpool print \n";
-	for (auto it = pathpool.begin(); it != pathpool.end(); it++) {
+	for (auto it = path_pool.begin(); it != path_pool.end(); it++) {
 		std::cout <<" path for Agent "<< it->first<< " : ";
 		for (auto jt = it->second.begin(); jt != it->second.end(); jt++) {
 			std::cout << *jt<<" ";
@@ -49,7 +49,7 @@ CAgentSystem::CAgentSystem(std::string pathname)
 			stPoint((*it)[2], (*it)[3]),
 			gridmap, distance
 		);
-		Agent_pool.push_back(agent);
+		agent_pool.push_back(agent);
 	}
 
 	begintime = clock();
@@ -65,24 +65,30 @@ CAgentSystem::~CAgentSystem()
 
 int CAgentSystem::run()
 {/*	
-	Agent_pool
-	pathpool
+	agent_pool
+	path_pool
  */
-	while (!Agent_pool.empty()) {
-		for (auto it = Agent_pool.begin(); it != Agent_pool.end(); it++) {
-			(*it)->get_expand_node_count();
-			switch ((*it)->search_step()) {
-			case 1:
-				pathpool.insert(pair <int, std::vector<int>>((*it)->get_agent_id(), (*it)->get_path()));
-				this->cost_expand+= (*it)->get_expand_node_count();
-				Agent_pool.erase(it);
-				break;
-			case 2:
-				//TODO:“Ï≥£¥¶¿Ì
-				pathpool.insert(pair <int, std::vector<int>>((*it)->get_agent_id(), (*it)->get_path()));
-				Agent_pool.erase(it);
-				break;
-			default:;
+	vector <bool> finish(agent_pool.size(),false);
+	bool continueloop=true;
+	while (continueloop) {
+		for (auto it = agent_pool.begin(); it != agent_pool.end(); it++) {
+			if (finish[it - agent_pool.begin()] == false) {
+				int temp_search_result = (*it)->search_step();
+				if (temp_search_result == 1 || temp_search_result == 2) {
+					this->cost_expand += (*it)->get_expand_node_count();
+					path_pool.insert(pair <int, std::vector<int>>((*it)->get_agent_id(), (*it)->get_path()));
+					finish[it - agent_pool.begin()] = true;
+				};
+			}
+			if (it == agent_pool.end()-1) {
+				auto jt = finish.begin();
+				for (; jt != finish.end(); jt++) {
+					if ((*jt) == false) {
+						continueloop = false;
+						break;
+					}
+				}
+				continueloop = (continueloop == false) ? true : false;
 			}
 		}
 	}

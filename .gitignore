@@ -4,9 +4,9 @@
 
 /.vs/GMAS/v16
 /.vs
-/Debug
+Debug
 *.txt
-/Generate/Debug
-/GMAS/Debug
-/map
-/mas
+Generate/Debug
+GMAS/Debug
+map/
+mas/
