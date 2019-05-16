@@ -14,6 +14,11 @@ void CAgentSystem::print_pathpool_to_Console()
 	std::cout << "\n";
 }
 
+int CAgentSystem::resolve_conflicts()
+{
+	return 0;
+}
+
 
 CAgentSystem::CAgentSystem(std::string pathname)
 {
