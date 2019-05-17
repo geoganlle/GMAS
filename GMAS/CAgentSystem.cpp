@@ -3,11 +3,11 @@
 #include "CGlobalFuntion.h"
 void CAgentSystem::print_pathpool_to_Console()
 {
-	std::cout <<"\n pathpool print \n";
+	std::cout <<"\npathpool print \n";
 	for (auto it = path_pool.begin(); it != path_pool.end(); it++) {
 		std::cout <<" path for Agent "<< it->first<< " : ";
 		for (auto jt = it->second.begin(); jt != it->second.end(); jt++) {
-			std::cout << *jt<<" ";
+			std::cout << *jt<<"  ";
 		}
 		std::cout << "\n";
 	}
@@ -16,6 +16,21 @@ void CAgentSystem::print_pathpool_to_Console()
 
 int CAgentSystem::resolve_conflicts()
 {
+	/*
+	冲突处理策略：开销高的优先
+		1 2 4
+		1 2 3 4 5
+		1 2 4 5 6 5
+	
+	*/
+	bool conflicts = false;
+	for (auto it = path_pool.begin(); it != path_pool.end(); it++) {
+		for (auto jt = it->second.begin(); jt != it->second.end(); it++) {
+
+		
+		}
+	}
+	cost_time = clock() - this->begintime;
 	return 0;
 }
 
@@ -62,6 +77,7 @@ CAgentSystem::CAgentSystem(std::string pathname)
 	this->cost_expand = 0;
 	this->cost_time = 0;
 
+	cost_time = clock() - this->begintime;
 }
 
 CAgentSystem::~CAgentSystem()

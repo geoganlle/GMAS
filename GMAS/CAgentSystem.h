@@ -24,8 +24,8 @@ class CAgentSystem
 	CDistance* distance;
 
 	clock_t begintime;
-	clock_t cost_time;//耗时
-	int cost_expand;//总开销
+	clock_t cost_time;//耗时  TODO
+	int cost_expand;//总开销 扩展节点
 	int conflict_num;//冲突数量
 
 	std::unordered_map <int,std::vector<int>> path_pool;//agentid path
