@@ -20,7 +20,7 @@ struct stSearch_Node {
 
 class CAgent
 {
-	const static int DIM_X;
+	//const static int DIM_X;
 	int agentid;
 	stPoint init;
 	stPoint goal;
@@ -38,7 +38,7 @@ class CAgent
 public:
 	CAgent(int agentid,stPoint init,stPoint goal, CGridMap* gridmap,CDistance* cdistance);
 	~CAgent();
-	/*向外扩张一次 成功返回1 找到目标节点返回1 失败返回2*/
+	/*向外扩张一次 扩张成功返回0 找到目标节点返回1 失败返回2*/
 	int search_step();
 	
 	///启发式函数 曼哈顿距离

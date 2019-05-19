@@ -17,3 +17,4 @@ public:
 vector<int> string_spilt_to_int(const std::string& string_input);
 void test1();//²âÊÔmap bfs agent
 void test2();//²âÊÔagentsystem
+void test3();//²âÊÔ¶à¸öagentsystem
