@@ -1,6 +1,7 @@
 #include "CAgentSystem.h"
 #include <string>
 #include "CGlobalFuntion.h"
+#include <set>
 void CAgentSystem::print_pathpool_to_Console()
 {
 	std::cout <<"\npathpool print \n";
@@ -18,17 +19,54 @@ int CAgentSystem::resolve_conflicts()
 {
 	/*
 	冲突处理策略：开销高的优先
-		1 2 4
-		1 2 3 4 5
-		1 2 4 5 6 5
-	
+	返回值
+	-1	：
+	-2	：
+	0	：
 	*/
-	bool conflicts = false;
-	for (auto it = path_pool.begin(); it != path_pool.end(); it++) {
-		for (auto jt = it->second.begin(); jt != it->second.end(); it++) {
+	/*
+	auto iter1 = path_pool.begin(); iter1++;
+	auto jter = iter1->second.begin(); jter += 1;
+	iter1->second.insert(jter,11);
+	*/
 
+
+	std::set<int> step_cach_set;
+
+	//取最长的路径作为循环次数
+	auto iter = path_pool.end(); iter--;
+	for (int i = 0; i < iter->second.size(); i++){
 		
+		//对每个时刻一次遍历每个智能体动作
+		for (auto agent_it = path_pool.begin(); agent_it != path_pool.end(); agent_it++) {
+
+			if (i < agent_it->second.size()) {//数组越界检查
+				
+				if (step_cach_set.count(agent_it->second.at(i))== 0) {//检查冲突是否出现
+					step_cach_set.insert(agent_it->second.at(i));//冲突未出现
+				}
+				else {
+					if (i > 0) {
+						int before_int = i - 1;
+						if (step_cach_set.count(agent_it->second.at(before_int)) == 0) {//冲突是否出现
+							step_cach_set.insert(agent_it->second.at(before_int));//冲突未出现
+							agent_it->second.insert(agent_it->second.begin() + i, agent_it->second.at(before_int));
+						}
+						else {
+							std::cout << "Error: Can not resolve conflicts : wait fail \n";
+							cost_time = clock() - this->begintime;
+							return -2;
+						}
+					}
+					else {
+						std::cout << "Error: Can not resolve conflicts : init point conflicts \n";
+						cost_time = clock() - this->begintime;
+						return -1;
+					}
+				}
+			}
 		}
+		step_cach_set.clear();
 	}
 	cost_time = clock() - this->begintime;
 	return 0;

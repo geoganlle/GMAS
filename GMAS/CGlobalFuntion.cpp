@@ -63,5 +63,14 @@ void test2()
 	CAgentSystem mas("../mas/10x10mas2.txt");
 	mas.run();
 	mas.print_pathpool_to_Console();
+	switch (mas.resolve_conflicts())
+	{
+	case -1:;
+	case -2:;
+	case 0: ;
+	default:
+		break;
+	};
+	mas.print_pathpool_to_Console();
 
 }
