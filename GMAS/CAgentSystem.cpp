@@ -24,11 +24,11 @@ int CAgentSystem::resolve_conflicts()
 	-2	£º
 	0	£º
 	*/
-	/*
+	
 	auto iter1 = path_pool.begin(); iter1++;
 	auto jter = iter1->second.begin(); jter += 1;
 	iter1->second.insert(jter,11);
-	*/
+	
 
 
 	std::set<int> step_cach_set;
