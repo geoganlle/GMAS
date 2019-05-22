@@ -120,6 +120,15 @@ CAgentSystem::CAgentSystem(std::string pathname)
 
 CAgentSystem::~CAgentSystem()
 {
+	delete distance;
+	delete gridmap;
+	path_pool.clear();
+	for (auto it = agent_pool.begin();it!=agent_pool.end();it++)
+	{
+		delete *it;
+	}
+	agent_pool.clear();
+	std::cout << "\n~CAgent : CAgent destructed\n" << std::endl;
 }
 
 int CAgentSystem::run()

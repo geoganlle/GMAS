@@ -10,8 +10,9 @@ CAgent::CAgent(int agentid_i, stPoint init_i, stPoint goal_i, CGridMap* gridmap_
 		[](const stSearch_Node & node_left, const stSearch_Node & node_right) -> int {
 			return node_left.fn < node_right.fn;
 		});
-	visited.resize(gridmap->getDim().x * gridmap->getDim().y );
-	visited[gridmap->hashpt(&temp.location)]=true;
+	int resize_length = gridmap->getDim().x * gridmap->getDim().y;
+	visited.resize(resize_length);
+	visited[gridmap->hashpt(temp.location)]=true;
 
 	search_count = 0;
 	expand_node_count = 0;
@@ -19,9 +20,11 @@ CAgent::CAgent(int agentid_i, stPoint init_i, stPoint goal_i, CGridMap* gridmap_
 
 CAgent::~CAgent()
 {
-	this->close_search_node_pool.clear();
 	this->search_node_pool.clear();
+	this->close_search_node_pool.clear();
 	this->path_hash.clear();
+	this->visited.clear();
+	std::cout << "~CAgent : CAgent destructed" << std::endl;
 }
 
 int CAgent::search_step()
@@ -35,7 +38,7 @@ int CAgent::search_step()
 	std::cout << "\n";
 	*/
 	stSearch_Node curnode = search_node_pool.front();
-	visited[gridmap->hashpt(&curnode.location)] = true;
+	visited[gridmap->hashpt(curnode.location)] = true;
 	search_node_pool.erase(search_node_pool.begin());
 	close_search_node_pool.push_back(curnode);
 
@@ -49,7 +52,7 @@ int CAgent::search_step()
 		expandnode.location = dir_move_stPoint(curnode.location, i);
 		if (i == (curnode.dir_to_parent) ||//来时方向
 			neighbor_node[i]==0 || //不可达
-			visited[gridmap->hashpt(&expandnode.location)]==true)//已访问过
+			visited[gridmap->hashpt(expandnode.location)]==true)//已访问过
 		{
 			/*
 			std::cout << " A " << ( i == (curnode.dir_to_parent))?1:0;
@@ -96,7 +99,7 @@ int CAgent::search_step()
 
 int CAgent:: h(const stPoint& init, const stPoint& goal, CGridMap* gridmap)
 {
-	CBfs bfs(&stPoint(init.x,init.y), &stPoint(goal.x, goal.y), gridmap);
+	CBfs bfs(stPoint(init.x, init.y), stPoint(goal.x, goal.y), gridmap);
 	return  bfs.get_soln_cost_int();
 }
 
@@ -107,14 +110,14 @@ std::vector<int> CAgent::get_path()
 
 	stSearch_Node curnode = close_search_node_pool.back();
 	close_search_node_pool.pop_back();
-	path_hash.push_back(gridmap->hashpt(&curnode.location));
+	path_hash.push_back(gridmap->hashpt(curnode.location));
 	do {
 		stPoint parent_point = dir_move_stPoint(curnode.location, curnode.dir_to_parent);
 		if(!close_search_node_pool.empty())
 		for (auto it = close_search_node_pool.begin(); it != close_search_node_pool.end(); it++) {
 			if (it->location == parent_point) {
 				curnode = *it;
-				path_hash.push_back(gridmap->hashpt(&parent_point));
+				path_hash.push_back(gridmap->hashpt(parent_point));
 				close_search_node_pool.erase(it);
 				break;
 			}

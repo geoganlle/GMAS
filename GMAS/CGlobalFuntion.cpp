@@ -50,7 +50,7 @@ void test1()
 {
 	//test
 	CGridMap map("../map/10x10map0.txt");
-	CBfs a(&stPoint(0, 0), &stPoint(9, 9), &map);
+	CBfs a(stPoint(0, 0), stPoint(9, 9), &map);
 	cout << "bfs cost " << a.get_soln_cost_int() << endl;
 	CDistance d((&map), false);
 	CAgent	agent(0, stPoint(0, 0), stPoint(9, 9), &map, &d);

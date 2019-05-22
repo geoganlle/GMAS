@@ -1,15 +1,15 @@
 #include "CBfs.h"
 
-CBfs::CBfs(stPoint* o, stPoint* d, CGridMap* g):
-	orig_stPoint(o),dest_stPoint(d),gridmap_CGridMapp(g)
+CBfs::CBfs(const stPoint& o, const stPoint d, CGridMap* g)
+	: orig_stPoint(o),dest_stPoint(d),gridmap_CGridMapp(g)
 {
 	soln_cost_int = INT_MAX;
 	this->dim_stPoint = g->getDim();
 	visited_length_int = dim_stPoint.x * dim_stPoint.y;
 	visited_boolp = new bool[visited_length_int]();//默认初始化为false(0)
 
-	if (gridmap_CGridMapp->passable(*orig_stPoint) &&
-		gridmap_CGridMapp->passable(*dest_stPoint) ){
+	if (gridmap_CGridMapp->passable(orig_stPoint) &&
+		gridmap_CGridMapp->passable(dest_stPoint) ){
 		search();
 	}
 
@@ -24,14 +24,14 @@ CBfs::~CBfs()
 void CBfs::search()
 {
 	std::queue<stPointBFS> node_queue;
-	node_queue.push(stPointBFS(*orig_stPoint, WAIT, 0));
+	node_queue.push(stPointBFS(orig_stPoint, WAIT, 0));
 	visited_boolp[gridmap_CGridMapp->hashpt(orig_stPoint)] = true;
 	while (!node_queue.empty()) {
 		stPointBFS curNode = node_queue.front();
 		node_queue.pop();
 		//std::cout << "\nlog pop" << gridmap_CGridMapp->hashpt(&curNode.p_stPoint)<<"depth:"<< curNode.depth_int << std::endl;
-		if (curNode.p_stPoint.x == dest_stPoint->x && 
-			curNode.p_stPoint.y == dest_stPoint->y) {
+		if (curNode.p_stPoint.x == dest_stPoint.x && 
+			curNode.p_stPoint.y == dest_stPoint.y) {
 			soln_cost_int = curNode.depth_int;
 			return;
 		}

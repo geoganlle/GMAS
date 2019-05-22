@@ -21,9 +21,9 @@ void CDistance::search(stPoint& o, stPoint& d)
 {
 	int dimX = gridmap_CGridMap->getDim().x;
 	int dimY = gridmap_CGridMap->getDim().y;
-	CBfs* bfs=new CBfs(&o, &d, this->gridmap_CGridMap);
-	if(gridmap_CGridMap->hashpt(&o)< (dimX * dimY)&&gridmap_CGridMap->hashpt(&d)<(dimX * dimY))
-	table_intpp[gridmap_CGridMap->hashpt(&o)][gridmap_CGridMap->hashpt(&d)] = (*bfs).get_soln_cost_int();
+	CBfs* bfs=new CBfs(o, d, this->gridmap_CGridMap);
+	if(gridmap_CGridMap->hashpt(o)< (dimX * dimY)&&gridmap_CGridMap->hashpt(d)<(dimX * dimY))
+	table_intpp[gridmap_CGridMap->hashpt(o)][gridmap_CGridMap->hashpt(d)] = (*bfs).get_soln_cost_int();
 	bfs ->~CBfs();
 }
 
@@ -50,6 +50,7 @@ CDistance::~CDistance()
 	for (int i = 0; i < dimX * dimY; i++)
 		delete[] table_intpp[i];
 	delete[] table_intpp;
+	std::cout << "~CDistance : CDistance destructed " << std::endl;
 }
 
 void CDistance::printDistanceTable()

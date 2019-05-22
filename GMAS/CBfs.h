@@ -22,14 +22,14 @@ class CBfs
 	int soln_cost_int;//消耗
 	CGridMap* gridmap_CGridMapp;//地图
 	stPoint dim_stPoint;//地图尺寸
-	stPoint* orig_stPoint;//起点
-	stPoint* dest_stPoint;//终点
+	stPoint orig_stPoint;//起点
+	stPoint dest_stPoint;//终点
 
 	bool* visited_boolp;//用于广度优先遍历的数组，标记已访问过的点
 	int visited_length_int;//visited_boolp数组的长度
 
 public:
-	CBfs(stPoint* o,stPoint* d,CGridMap* g);
+	CBfs(const stPoint & orig_stPoint,const stPoint dest_stPoint,CGridMap* gridmap_CGridMapp);
 	~CBfs();
 
 	void search();

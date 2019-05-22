@@ -36,8 +36,11 @@ constexpr auto DIM = 8;//8个方向;
 struct stPoint {
 	int x;
 	int y;
-	stPoint(int inputx, int inputy) : x(inputx) , y(inputy) {};
-	stPoint() : y(0) , x(0) {};
+	stPoint(int inputx = 0 , int inputy = 0 ) : x(inputx) , y(inputy) {};
+	void operator()(const stPoint& cp){
+		x = cp.x;
+		y = cp.y;
+	};
 	bool operator==(const stPoint& point_input) { 
 		return this->x == point_input.x && this->y == point_input.y; 
 	};
@@ -198,7 +201,7 @@ public:
 	bool passable(const stPoint& pos)const;//检测pos位置是否有点
 	stPoint getDim();//得到地图尺寸
 
-	int hashpt(stPoint* p);//将地图中的一个坐标映射到成一位数组的下标
+	int hashpt(const stPoint& p);//将地图中的一个坐标映射到成一位数组的下标
 	stPoint unhash(int hash);//将一个数组下标映射成地图上的
 
 	CGridMap(std::string pathname);//从文件中读取地图
@@ -219,9 +222,9 @@ stPoint CGridMap::getDim()
 	return stPoint(dimX_int, dimY_int);
 }
 inline
-int CGridMap::hashpt(stPoint * p)
+int CGridMap::hashpt(const stPoint & p)
 {
-	return (p->y * dimX_int + p->x);
+	return (p.y * dimX_int + p.x);
 }
 inline
 stPoint CGridMap::unhash(int hash)

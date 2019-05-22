@@ -22,6 +22,7 @@ std::string GenerateMap::generateMapName()
 
 bool GenerateMap::RandGenerateMap(const int& maptype, const double& density)
 {
+
 	int* hashintmap = new int[(__int64)int_dim_x * (__int64)int_dim_y];
 	try
 	{
@@ -41,20 +42,16 @@ bool GenerateMap::RandGenerateMap(const int& maptype, const double& density)
 				std::swap(hashintmap[i], hashintmap[j]);
 				this->int_map[hashintmap[i] / int_dim_x ][hashintmap[i] % int_dim_x] = 1;
 			}else {
-				//std::cout << "Log5" << std::endl;
 				throw new std::exception("Array overflow/underflow error");
+				return false;
 			}
 		}
 		std::cout <<"rand number"<< std::floor(((__int64)int_dim_x * (__int64)int_dim_y) * density )<<"/"<< (__int64)int_dim_x * (__int64)int_dim_y << std::endl;
-		//for (int i = 0; i < (__int64)int_dim_x * (__int64)int_dim_y; i++) {
-		//	std::cout<<hashintmap[i]<<" ";
-		//}
 		delete[] hashintmap;
 		return true;
 	}
 	catch (const std::exception& e)
 	{
-		//std::cout << "Log6" << std::endl;
 		std::cerr << e.what() << std::endl;
 		delete[] hashintmap;
 		return false;
