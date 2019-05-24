@@ -2,7 +2,7 @@
 //
 
 #include <iostream>
-#include "CGlobalFuntion.h"
+#include "CGlobalFunction.h"
 
 using namespace std;
 

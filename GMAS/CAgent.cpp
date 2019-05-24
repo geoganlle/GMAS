@@ -24,7 +24,7 @@ CAgent::~CAgent()
 	this->close_search_node_pool.clear();
 	this->path_hash.clear();
 	this->visited.clear();
-	std::cout << "~CAgent : CAgent destructed" << std::endl;
+	//std::cout << "~CAgent : CAgent destructed" << std::endl;
 }
 
 int CAgent::search_step()
@@ -37,6 +37,7 @@ int CAgent::search_step()
 	}
 	std::cout << "\n";
 	*/
+	if (search_node_pool.empty())return 3;
 	stSearch_Node curnode = search_node_pool.front();
 	visited[gridmap->hashpt(curnode.location)] = true;
 	search_node_pool.erase(search_node_pool.begin());

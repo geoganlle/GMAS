@@ -3,7 +3,7 @@
   <Class Name="GenerateMAS">
     <Position X="2.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BEAQAAAgAAAAAAAAAAAAAIAAAAAAAQQAAQAADQAABAA=</HashCode>
+      <HashCode>BEAQAAAgAAAAAAAAAAAAAIAAAAAAAQQAAQAADQAARAA=</HashCode>
       <FileName>GenerateMAS.h</FileName>
     </TypeIdentifier>
   </Class>

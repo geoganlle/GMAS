@@ -109,7 +109,7 @@ GenerateMAS::GenerateMAS(int agent_number_in, GenerateMap* gridmap_in)
 {
 	int_dim_x = gridmap->getDimx();
 	int_dim_y = gridmap->getDimy();
-	string_mas_name = this->generateAgentFileName();
+	string_mas_name = generate_file_name("mas", int_dim_x, int_dim_y);
 }
 
 GenerateMAS::~GenerateMAS()

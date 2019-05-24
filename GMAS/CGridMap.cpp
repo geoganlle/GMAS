@@ -70,7 +70,7 @@ CGridMap::CGridMap(std::string pathname)
 			map_boolpp[i][j] = (gridmap_line_vector[i][j] == '1');
 		}
 	}
-	printGridMap();
+	//printGridMap();
 	std::cout << "dimX = " << dimX_int << " dimY = " << dimY_int <<std::endl;
 }
 /*

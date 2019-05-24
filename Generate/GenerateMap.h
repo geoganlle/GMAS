@@ -7,6 +7,9 @@
 #include<exception>
 #include<fstream>
 #include<direct.h>
+
+std::string generate_file_name(std::string path_name = "", int dimx = 0, int dimy = 0);
+
 class GenerateMap
 {
 private:

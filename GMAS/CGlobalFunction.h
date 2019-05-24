@@ -7,12 +7,12 @@
 #include "CAgent.h"
 #include "CAgentSystem.h"
 using namespace std;
-class CGlobalFuntion
+class CGlobalFunction
 {
 public:
 
-	CGlobalFuntion();
-	~CGlobalFuntion();
+	CGlobalFunction();
+	~CGlobalFunction();
 };
 vector<int> string_spilt_to_int(const std::string& string_input);
 void test1();//≤‚ ‘map bfs agent

@@ -85,7 +85,7 @@ GenerateMap::GenerateMap()
 			int_map[row][col] = 0;
 		}
 	}
-	this->string_map_name = generateMapName();
+	this->string_map_name = generate_file_name("map", int_dim_x, int_dim_y);
 }
 
 GenerateMap::GenerateMap(const int& dimx, const int& dimy)
@@ -110,7 +110,7 @@ GenerateMap::GenerateMap(const int& dimx, const int& dimy)
 			int_map[row][col] = 0;
 		}
 	}
-	this->string_map_name = generateMapName();
+	this->string_map_name = generate_file_name("map", int_dim_x, int_dim_y);
 }
 
 

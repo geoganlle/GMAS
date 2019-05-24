@@ -155,7 +155,7 @@
     <ClCompile Include="CAgentSystem.cpp" />
     <ClCompile Include="CBfs.cpp" />
     <ClCompile Include="CDistance.cpp" />
-    <ClCompile Include="CGlobalFuntion.cpp" />
+    <ClCompile Include="CGlobalFunction.cpp" />
     <ClCompile Include="CGridMap.cpp" />
     <ClCompile Include="GMAS.cpp" />
   </ItemGroup>
@@ -164,7 +164,7 @@
     <ClInclude Include="CAgentSystem.h" />
     <ClInclude Include="CBfs.h" />
     <ClInclude Include="CDistance.h" />
-    <ClInclude Include="CGlobalFuntion.h" />
+    <ClInclude Include="CGlobalFunction.h" />
     <ClInclude Include="CGridMap.h" />
   </ItemGroup>
   <ItemGroup>

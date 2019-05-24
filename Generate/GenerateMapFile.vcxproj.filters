@@ -24,12 +24,18 @@
     <ClCompile Include="GenerateMAS.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="GlobalFunction.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GenerateMap.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="GenerateMAS.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalFunction.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -33,7 +33,7 @@
     <ClCompile Include="CAgentSystem.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CGlobalFuntion.cpp">
+    <ClCompile Include="CGlobalFunction.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -53,7 +53,7 @@
     <ClInclude Include="CAgentSystem.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="CGlobalFuntion.h">
+    <ClInclude Include="CGlobalFunction.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

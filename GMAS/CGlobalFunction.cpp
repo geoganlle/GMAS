@@ -1,12 +1,12 @@
-#include "CGlobalFuntion.h"
+#include "CGlobalFunction.h"
 
 
 
-CGlobalFuntion::CGlobalFuntion()
+CGlobalFunction::CGlobalFunction()
 {
 }
 
-CGlobalFuntion::~CGlobalFuntion()
+CGlobalFunction::~CGlobalFunction()
 {
 }
 
@@ -94,17 +94,19 @@ void test2()
 
 void test3()
 {
-	vector <string> masfilename_vector = readfile("../test/test0.txt");
+	vector <string> masfilename_vector = readfile("../test/test_4.txt");
 	vector <stCAgentSystem> testresult_pool;
+	int resolve_count = 0;
 	for (int i=0;i<masfilename_vector.size();i++)
 	{
+		cout << "begin instance "<<i+1<<"\n";
 		CAgentSystem mas(masfilename_vector[i]);
 		mas.run();
-		mas.resolve_conflicts();
+		if(mas.resolve_conflicts()==0)resolve_count++;
 		stCAgentSystem temp(i,mas.get_cost_time(),mas.get_cost_expand(),mas.get_conflict_num());
 		testresult_pool.push_back(temp);
 	}
-	cout << "\n共解决了"<< masfilename_vector.size()<<"个多智能体系统\n";
+	cout << "\n共解决了"<< resolve_count <<"/"<< masfilename_vector.size()<<"个多智能体系统\n";
 	clock_t costtime = 0;
 	int cost_expand = 0;
 	int conflict = 0;

@@ -2,23 +2,13 @@
 //
 
 #include <iostream>
-#include "GenerateMap.h"
-#include "GenerateMAS.h"
+#include "GlobalFunction.h"
+
+
 int main()
 {
-	GenerateMap * map=new GenerateMap(10,10);
-	map->RandGenerateMap(0,0.80);
-	map->PrintConsole();
-	map->WriteFile();
-	GenerateMAS * mas = new GenerateMAS(6,map);
-	mas->RandGenerateAgent();
-	mas->PrintConsole();
-	mas->WriteFile();
-
-	delete map;
-	delete mas;
-
-    std::cout << "Generation program finished"<<std::endl; 
+	create_mas_task(30);
+    std::cout << ">>Generation program finished<<"<<std::endl; 
 	//system("PAUSE");
 }
 

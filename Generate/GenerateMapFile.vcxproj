@@ -154,10 +154,12 @@
     <ClCompile Include="GenerateMAS.cpp" />
     <ClCompile Include="GenerateMap.cpp" />
     <ClCompile Include="GenerateMapFile.cpp" />
+    <ClCompile Include="GlobalFunction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GenerateMAS.h" />
     <ClInclude Include="GenerateMap.h" />
+    <ClInclude Include="GlobalFunction.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

@@ -11,7 +11,7 @@
 class GenerateMAS
 {
 	int int_agent_number;
-	int int_dim_x ;
+	int int_dim_x;
 	int int_dim_y;
 	GenerateMap* gridmap;
 	std::vector <int> int_cached;
@@ -19,6 +19,7 @@ class GenerateMAS
 	std::string string_mas_name;//写入文件的名字
 	std::string generateAgentFileName();//生成文件名
 public:
+	std::string get_mas_name();
 	bool RandGenerateAgent();
 	bool checkNodeInput(const int& x, const int& y);
 
@@ -28,6 +29,11 @@ public:
 	GenerateMAS(int agent_number,GenerateMap* gridmap);
 	~GenerateMAS();
 };
+inline
+std::string GenerateMAS::get_mas_name()
+{
+	return this->string_mas_name;
+}
 
 inline bool GenerateMAS::checkNodeInput(const int& x, const int& y)
 {

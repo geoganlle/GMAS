@@ -1,6 +1,6 @@
 #include "CAgentSystem.h"
 #include <string>
-#include "CGlobalFuntion.h"
+#include "CGlobalFunction.h"
 #include <set>
 void CAgentSystem::print_pathpool_to_Console()
 {
@@ -29,8 +29,6 @@ int CAgentSystem::resolve_conflicts()
 	auto jter = iter1->second.begin(); jter += 1;
 	iter1->second.insert(jter,11);
 	
-
-
 	std::set<int> step_cach_set;
 
 	//取最长的路径作为循环次数
@@ -46,22 +44,19 @@ int CAgentSystem::resolve_conflicts()
 					step_cach_set.insert(agent_it->second.at(i));//冲突未出现
 				}
 				else {
-					if (i > 0) {
-						int before_int = i - 1;
-						if (step_cach_set.count(agent_it->second.at(before_int)) == 0) {//冲突是否出现
-							step_cach_set.insert(agent_it->second.at(before_int));//冲突未出现
-							agent_it->second.insert(agent_it->second.begin() + i, agent_it->second.at(before_int));
-						}
-						else {
-							std::cout << "Error: Can not resolve conflicts : wait fail \n";
-							cost_time = clock() - this->begintime;
-							return -2;
-						}
+					int before_int = i - 1 >= 0 ? i - 1 : 0; 
+					if (step_cach_set.count(agent_it->second.at(before_int)) == 0) {//冲突是否出现
+						step_cach_set.insert(agent_it->second.at(before_int));//冲突未出现
+						
 					}
 					else {
-						std::cout << "Error: Can not resolve conflicts : init point conflicts \n";
-						cost_time = clock() - this->begintime;
-						return -1;
+						//冲突出现
+						agent_it->second.insert(agent_it->second.begin() + i, agent_it->second.at(before_int));
+						conflict_num++;
+
+						//std::cout << "Error: Can not resolve conflicts : wait fail \n";
+						//cost_time = clock() - this->begintime;
+						//return -2;
 					}
 				}
 			}
@@ -128,7 +123,7 @@ CAgentSystem::~CAgentSystem()
 		delete *it;
 	}
 	agent_pool.clear();
-	std::cout << "\n~CAgent : CAgent destructed\n" << std::endl;
+	std::cout << "~CAgentSystem : CAgentSystem destructed\n" << std::endl;
 }
 
 int CAgentSystem::run()
