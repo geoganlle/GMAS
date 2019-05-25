@@ -76,7 +76,6 @@ void test1()
 
 void test2()
 {
-	//system("dir");
 	CAgentSystem mas("../mas/10x10mas2.txt");
 	mas.run();
 	mas.print_pathpool_to_Console();
@@ -118,4 +117,15 @@ void test3()
 	cout << "总耗时: " << costtime << " 平均耗时:"<< costtime/testresult_pool.size();
 	cout << "\n总扩展节点: " << cost_expand << " 平均扩展节点:" << cost_expand / testresult_pool.size();
 	cout << "\n冲突总数: " << conflict << " 平均冲突数:" << conflict / testresult_pool.size();
+}
+
+void runmas1()
+{
+	string mas_filepath = "C:\\Users\\guzhe\\Desktop\\GMAS\\cached\\mas.txt";
+	string pathpool_filepath = "C:\\Users\\guzhe\\Desktop\\GMAS\\cached\\pathpool.txt";
+	CAgentSystem mas(mas_filepath);
+	mas.run();
+	mas.resolve_conflicts();
+	mas.print_pathpool_to_file(pathpool_filepath);
+
 }

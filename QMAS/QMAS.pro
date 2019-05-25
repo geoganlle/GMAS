@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2019-05-16T10:31:23
+# Project created by QtCreator 2019-05-25T00:58:59
 #
 #-------------------------------------------------
 
@@ -8,7 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = QGMAS
+TARGET = QMAS
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -25,10 +25,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        CPixMapItem.cpp \
+        CScene.cpp \
         main.cpp \
         mainwindow.cpp
 
 HEADERS += \
+        CPixMapItem.h \
+        CScene.h \
         mainwindow.h
 
 FORMS += \

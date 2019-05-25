@@ -1,11 +1,10 @@
 #pragma once
 #include <QGraphicsPixmapItem>
 #include <QDir>
-#include <QtWidgets\QGraphicsPixmapItem>
-#include<ImageHlp.h>
+#include <iostream>
 
 typedef enum { whiteio,greyio,pinkio,blueio,greenio,pregreenio,redio  } ColourIcon;
-const static QString ColourIconName[7]{ "whiteio","greyio","pinkio","blueio","greenio","pregreenio","redio" }
+const static QString ColourIconName[7]{ "whiteio","greyio","pinkio","blueio","greenio","pregreenio","redio" };
 typedef enum { passable, obstacle, origin, destination, path, expand, conflict } ColourMean;
 typedef enum { E, S, W, N, NE, NW, SE, SW } Direction;
 
@@ -15,13 +14,13 @@ class CPixMapItem :
 	int x, y;
 	ColourIcon colour;
 public:
-	CPixMapItem(ColourIcon,int x,int y);
+    CPixMapItem(ColourIcon cin = whiteio, int xin = 0, int yin = 0);
 	~CPixMapItem();
 
 	int get_x();
 	int get_y();
 	void set_location(int x, int y);//设置坐标
-	ColourIcon get ColourIcon();
+    ColourIcon get_ColourIcon();
 	void set_colour(ColourIcon colourin);
 	bool is_obstaculo();//是否为障碍物
 };
@@ -40,12 +39,12 @@ inline void CPixMapItem::set_location(int xin, int yin)
 	y = yin;
 }
 
-inline ColourIcon get CPixMapItem::ColourIcon()
+inline ColourIcon CPixMapItem::get_ColourIcon()
 {
-	return colour;
+    return colour;
 }
 
 inline bool CPixMapItem::is_obstaculo()
 {
-	return colour == obstacle ? true : false;
+    return colour == static_cast<int>(obstacle) ? true : false;
 }

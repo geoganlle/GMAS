@@ -50,7 +50,7 @@ CDistance::~CDistance()
 	for (int i = 0; i < dimX * dimY; i++)
 		delete[] table_intpp[i];
 	delete[] table_intpp;
-	std::cout << "~CDistance : CDistance destructed " << std::endl;
+	//std::cout << "~CDistance : CDistance destructed " << std::endl;
 }
 
 void CDistance::printDistanceTable()

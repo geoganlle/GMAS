@@ -106,9 +106,7 @@ int CAgent:: h(const stPoint& init, const stPoint& goal, CGridMap* gridmap)
 
 std::vector<int> CAgent::get_path()
 {
-	
 	if (close_search_node_pool.empty())return path_hash;
-
 	stSearch_Node curnode = close_search_node_pool.back();
 	close_search_node_pool.pop_back();
 	path_hash.push_back(gridmap->hashpt(curnode.location));
@@ -125,5 +123,6 @@ std::vector<int> CAgent::get_path()
 		};
 	} while (!(curnode.location == init));
 	//path_hash.push_back(gridmap->hashpt(&init));
+	reverse(path_hash.begin(),path_hash.end());
 	return path_hash;
 }

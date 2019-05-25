@@ -205,7 +205,6 @@ public:
 	stPoint unhash(int hash);//将一个数组下标映射成地图上的
 
 	CGridMap(std::string pathname);//从文件中读取地图
-	//CGridMap(int dimX, int dimY, stPoint** blocklist, int listlen);//根据一组障碍物点创建地图
 	~CGridMap();
 	
 };

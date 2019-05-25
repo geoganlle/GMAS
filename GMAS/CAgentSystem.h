@@ -42,6 +42,7 @@ public:
 	int get_conflict_num();//冲突数量
 
 	void print_pathpool_to_Console();
+	void print_pathpool_to_file(std::string filepaths);
 
 	int resolve_conflicts();//解决冲突
 };

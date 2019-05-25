@@ -71,30 +71,8 @@ CGridMap::CGridMap(std::string pathname)
 		}
 	}
 	//printGridMap();
-	std::cout << "dimX = " << dimX_int << " dimY = " << dimY_int <<std::endl;
+	//std::cout << "dimX = " << dimX_int << " dimY = " << dimY_int <<std::endl;
 }
-/*
-CGridMap::CGridMap(int dimX, int dimY, stPoint** blocklist, int listlen)
-{
-	dimX_int = dimX;
-	dimY_int = dimY;
-	stPoint** endPoint = blocklist + listlen;
-	map_boolpp = new bool* [dimY];
-
-	// true 1 false 0
-	for (int i = 0; i < dimY; i++) {
-		map_boolpp[i] = new bool[dimX];
-		for (int j = 0; j < dimX; j++) {
-			map_boolpp[i][j] = false; 
-			if (blocklist && **blocklist==stPoint(i,j))//判断有没有障碍物
-				blocklist = (blocklist + 1 == endPoint) ? 0 : blocklist + 1;//判断是否是最后一个障碍物
-			else
-				map_boolpp[i][j] = true;
-		}
-	}
-}
-*/
-
 
 CGridMap::~CGridMap()
 {

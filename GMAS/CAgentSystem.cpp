@@ -15,14 +15,33 @@ void CAgentSystem::print_pathpool_to_Console()
 	std::cout << "\n";
 }
 
-int CAgentSystem::resolve_conflicts()
+void CAgentSystem::print_pathpool_to_file(std::string filepath)
+{
+	std::ofstream __file;
+	__file.open(filepath, std::ios::out | std::ios::trunc);
+	if (!__file.is_open()) {
+		std::cout << "file open failed" << std::endl;
+		__file.close();
+		return;
+	}
+	__file << "# path pool has" << path_pool.size()<< "agents\n";
+	__file << "# agent agent_path \n";
+
+	for (auto it = path_pool.begin(); it != path_pool.end(); it++) {
+		__file << it->first << " ";
+		for (auto jt = it->second.begin(); jt != it->second.end(); jt++) {
+			__file << *jt << " ";
+		}
+		__file << "\n";
+	}
+	__file << "\n";
+	__file.close();
+}
+
+int CAgentSystem::resolve_conflicts()//静态全局处理，冲突一定能解决
 {
 	/*
 	冲突处理策略：开销高的优先
-	返回值
-	-1	：
-	-2	：
-	0	：
 	*/
 	
 	auto iter1 = path_pool.begin(); iter1++;
@@ -53,10 +72,6 @@ int CAgentSystem::resolve_conflicts()
 						//冲突出现
 						agent_it->second.insert(agent_it->second.begin() + i, agent_it->second.at(before_int));
 						conflict_num++;
-
-						//std::cout << "Error: Can not resolve conflicts : wait fail \n";
-						//cost_time = clock() - this->begintime;
-						//return -2;
 					}
 				}
 			}
@@ -79,7 +94,7 @@ CAgentSystem::CAgentSystem(std::string pathname)
 	if (file.is_open()) {
 		while (std::getline(file, line_string) && line_string.size()) {//读一行行长度不为0
 			if (line_string[0] == '#')continue;
-			if (line_string[0] == '.') { 
+			if (line_string[0] == '.'|| line_string[0] == 'C') {
 				map_file_path_name = line_string;
 				continue; 
 			}
@@ -123,7 +138,7 @@ CAgentSystem::~CAgentSystem()
 		delete *it;
 	}
 	agent_pool.clear();
-	std::cout << "~CAgentSystem : CAgentSystem destructed\n" << std::endl;
+	//std::cout << "~CAgentSystem : CAgentSystem destructed\n" << std::endl;
 }
 
 int CAgentSystem::run()
