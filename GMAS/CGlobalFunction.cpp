@@ -24,6 +24,7 @@ vector<int> string_spilt_to_int(const std::string& string_input)
 			temp_int = temp_int * 10 + ((*it) - '0');
 		}
 	}
+	if (string_input.back() != ' ')
 	result.push_back(temp_int);
 	return result;
 }
@@ -125,7 +126,8 @@ void runmas1()
 	string pathpool_filepath = "C:\\Users\\guzhe\\Desktop\\GMAS\\cached\\pathpool.txt";
 	CAgentSystem mas(mas_filepath);
 	mas.run();
+	mas.print_pathpool_to_Console();
 	mas.resolve_conflicts();
+	mas.print_pathpool_to_Console();
 	mas.print_pathpool_to_file(pathpool_filepath);
-
 }

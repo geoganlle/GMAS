@@ -7,7 +7,7 @@ void CGridMap::printGridMap()
 	std::cout<<"GridMap Print:"<<std::endl;
 	for (int i = 0; i < dimY_int; i++) {
 		for (int j = 0; j < dimX_int; j++) {
-			std::cout << ((map_boolpp[i][j]) ? 1 : 0);
+			std::cout << ((map_boolpp[i][j]) ? 1 : 0)<<" ";
 		}
 		std::cout << std::endl;
 	}

@@ -11,6 +11,11 @@ void CScene::generarMap()
     for (int i=0; i<static_cast<int>(row); i++){
         for (int j=0; j<static_cast<int>(col); j++){
             map[i][j] = new CPixMapItem(whiteio,j,i);
+			std::stringstream tip;
+			tip << (i * row + j);
+			std::string tips;
+			tip >> tips;
+			map[i][j]->setToolTip(QString::fromStdString(tips));
             map[i][j]->setOffset(pos_x,pos_y);
             this->addItem(map[i][j]);
             pos_x += 20;
@@ -26,7 +31,6 @@ CScene::CScene(int rowin, int colin)
     col = static_cast<unsigned long long>(colin);
     map = nullptr;
     curcolour=whiteio;
-	generate_init_or_goal = false;
 	//generate_goal_or_init = false;
     generarMap();
 
@@ -71,8 +75,14 @@ void CScene::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent){
 		}
 		*/
 		map[y][x]->set_colour(curcolour);
-		if (curcolour == pinkio)curcolour = blueio;
-		else if (curcolour == blueio)curcolour = pinkio;
+		if (curcolour == pinkio) { 
+			init_pos_pool.push_back(Point(x,y));
+			curcolour = blueio; 
+		}
+		else if (curcolour == blueio) {
+			goal_pos_pool.push_back(Point(x, y));
+			curcolour = pinkio;
+		}
     }
 
 }

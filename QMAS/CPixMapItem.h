@@ -46,5 +46,5 @@ inline ColourIcon CPixMapItem::get_ColourIcon()
 
 inline bool CPixMapItem::is_obstaculo()
 {
-    return colour == static_cast<int>(obstacle) ? true : false;
+    return (colour == greyio) ? true : false;
 }

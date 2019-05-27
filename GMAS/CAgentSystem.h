@@ -41,6 +41,7 @@ public:
 	int get_cost_expand();//总开销
 	int get_conflict_num();//冲突数量
 
+	void print_map_to_console();
 	void print_pathpool_to_Console();
 	void print_pathpool_to_file(std::string filepaths);
 

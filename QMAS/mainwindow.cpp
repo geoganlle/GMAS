@@ -15,10 +15,53 @@ std::vector<int> string_spilt_to_int(const std::string& string_input)
 			temp_int = temp_int * 10 + ((*it) - '0');
 		}
 	}
+	if (string_input.back() != ' ')
 	result.push_back(temp_int);
 	return result;
 }
 
+
+void MainWindow::save_to_cacaed_file(QString filepath)
+{
+	//map.txt mas.txt
+	std::ofstream __file;
+	__file.open(filepath.toStdString()+"\\map.txt", std::ios::out | std::ios::trunc);
+	if (!__file.is_open()) {
+		QString msg = QString::fromStdString("file open failed : ") +filepath+ QString::fromStdString("\\map.txt");
+		ui->textBrowser->setText(msg);
+		__file.close();
+		return;
+	}
+	for (int i = 0; i < scene->get_row(); i++) {
+		for (int j = 0; j < scene->get_col(); j++) {
+			if (scene->get_map()[i][j]->is_obstaculo())__file << 0;
+			else __file << 1;
+		}
+		__file << "\n";
+	};
+	__file.close();
+
+	__file.open(filepath.toStdString() + "\\mas.txt", std::ios::out | std::ios::trunc);
+	if (!__file.is_open()) {
+		QString msg = QString::fromStdString("file open failed : ") + filepath + QString::fromStdString("\\mas.txt");
+		__file.close();
+		return;
+	}
+	/*
+	# cached mas n agents
+	# init_point(x,y) goal_point(x,y)
+	C:\\Users\\guzhe\\Desktop\\GMAS\\cached\\map.txt
+	*/
+	int tasknumber = std::min(static_cast<int>(scene->init_pos_pool.size()),static_cast<int>( scene->goal_pos_pool.size()));
+	__file << "# cached mas \t"<< tasknumber <<" agents\n";
+	__file << "# init_point(x, y) goal_point(x, y)\n";
+	__file << filepath.toStdString()+"\\map.txt\n";
+	for (int i = 0; i < tasknumber; i++) {
+		__file << scene->init_pos_pool[i].x << " " << scene->init_pos_pool[i].y << " ";
+		__file << scene->goal_pos_pool[i].x << " " << scene->goal_pos_pool[i].y << "\n";
+	};
+	__file.close();
+}
 
 void MainWindow::generate_map_by_file(QString filepath)
 {
@@ -26,7 +69,7 @@ void MainWindow::generate_map_by_file(QString filepath)
 	std::ifstream	file(filepath.toStdString());
 	std::vector<std::string> gridmap_line_vector;
 	if (file.is_open()) {
-		while (std::getline(file, line_string) && line_string.size()) {//读一行行长度不为0
+		while (std::getline(file, line_string) && line_string.size()) {
 			gridmap_line_vector.push_back(line_string);
 		}
 		file.close();
@@ -38,10 +81,8 @@ void MainWindow::generate_map_by_file(QString filepath)
 	}
 	row_map = static_cast<int> (gridmap_line_vector.size());
 	col_map = static_cast<int> (gridmap_line_vector.at(0).size());
-
 	if (scene != nullptr)delete scene;
 	scene = new CScene(row_map, col_map);
-
 	for (int i = 0; i < row_map; i++) {
 		for (int j = 0; j < col_map; j++) {
 			// true 1 false 0
@@ -63,7 +104,7 @@ void MainWindow::generate_mas_by_file(QString filepath)
 	std::vector<std::string> point_line_vector;
 	std::string map_file_path_name;
 	if (file.is_open()) {
-		while (std::getline(file, line_string) && line_string.size()) {//读一行行长度不为0
+		while (std::getline(file, line_string) && line_string.size()) {//锟斤拷一锟斤拷锟叫筹拷锟饺诧拷为0
 			if (line_string[0] == '#')continue;
 			if (line_string[0] == '.') {
 				generate_map_by_file(QString::fromStdString(line_string));
@@ -80,21 +121,65 @@ void MainWindow::generate_mas_by_file(QString filepath)
 	}
 
 	int agent_number = static_cast<int> (point_line_vector.size());
-	
 	for (int i = 0; i < agent_number; i++) {
 		std::vector<int> point_pool = string_spilt_to_int(point_line_vector.at(i));
 		if (point_pool.size() != 4)continue;
-		init_pos_pool.push_back(Point(point_pool[0], point_pool[1]));
-		goal_pos_pool.push_back(Point(point_pool[2], point_pool[3]));
+		scene->init_pos_pool.push_back(Point(point_pool[0], point_pool[1]));
+		scene->goal_pos_pool.push_back(Point(point_pool[2], point_pool[3]));
 		scene->get_map()[point_pool[1]][point_pool[0]]->set_colour(pinkio);
 		scene->get_map()[point_pool[3]][point_pool[2]]->set_colour(blueio);
 		ui->gv_map->setScene(scene);
 	}
 }
 
-void MainWindow::generate_point_by_file(QString filepath)
+void MainWindow::generate_path_by_file(QString filepath)
 {
+	std::string	line_string;
+	std::ifstream	file(filepath.toStdString()+"\\pathpool.txt");
+	std::vector<std::string> line_vector;
+	if (file.is_open()) {
+		while (std::getline(file, line_string) && line_string.size()) {
+			if (line_string[0] == '#')continue;
+			line_vector.push_back(line_string);
+		}
+		file.close();
+	}
+	else {
+		std::string msg = "ERROR: Could not open file " + filepath.toStdString();
+		std::cout << msg << std::endl;
+		ui->textBrowser->setText(QString::fromStdString(msg));
+	}
+	int linenumber = static_cast<int> (line_vector.size());
+	for (int i = 0; i < linenumber; i++) {
+		std::vector<int> point_pool = string_spilt_to_int(line_vector.at(i));
+		int agent_number = point_pool.front();
+		if (point_pool.size() < 4)continue;
 
+		//涓哄嚭鍙戠偣鍜岀粓鐐硅缃畉ip
+		int init_row = *(point_pool.begin() + 1) / col_map;
+		int init_col = *(point_pool.begin() + 1) % col_map;
+		std::string tips = scene->get_map()[init_row][init_col]->toolTip().toStdString()
+			+ " [" + std::to_string(agent_number) + "]";
+		scene->get_map()[init_row][init_col]->setToolTip(QString::fromStdString(tips));
+		int goal_row = *(point_pool.end() - 1) / col_map;
+		int goal_col = *(point_pool.end() - 1) % col_map;
+		tips.clear();
+		tips = scene->get_map()[goal_row][goal_col]->toolTip().toStdString() 
+			+ " [" + std::to_string(agent_number) + "]";
+		scene->get_map()[goal_row][goal_col]->setToolTip(QString::fromStdString(tips));
+
+		for (auto it = point_pool.begin() + 2; it != point_pool.end()-1; it++) {
+			int point_row = (*it / col_map);
+			int point_col = (*it % col_map);
+			scene->get_map()[point_row][point_col]->set_colour(greenio);
+			std::stringstream ss;
+			ss << agent_number << "("<< (it - point_pool.begin() - 1)<<")";
+			std::string tips;
+			ss >> tips;
+			scene->get_map()[point_row][point_col]->setToolTip(scene->get_map()[point_row][point_col]->toolTip()+" "+QString::fromStdString(tips));
+		}
+	}
+	
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -168,9 +253,11 @@ void MainWindow::on_btn_genarate_taskpoint_clicked()
 
 void MainWindow::on_btn_run_global_clicked()
 {
+	save_to_cacaed_file("C:\\Users\\guzhe\\Desktop\\GMAS\\cached");
 	QProcess* process = new QProcess(this);
 	QString run_global_exe = "C:\\Users\\guzhe\\Desktop\\GMAS\\cached\\GMAS1.exe";
-	process->start(run_global_exe);
+	process->execute(run_global_exe);
+	generate_path_by_file("C:\\Users\\guzhe\\Desktop\\GMAS\\cached");
 }
 
 void MainWindow::on_btn_run_Dynamic_clicked()
@@ -188,12 +275,26 @@ void MainWindow::on_btn_run_by_stage_clicked()
 
 }
 
-void MainWindow::on_btn_reset_clicked()
+void MainWindow::on_btn_reset_clicked ()
 {
-
+	delete scene;
+	scene = nullptr;
+	row_map = ui->spin_row->value();
+	col_map = ui->spin_row->value();
+	ui->gv_map->setScene(scene);
 }
 
 void MainWindow::on_btn_exit_clicked()
 {
 	qApp->exit(0);
+}
+
+void MainWindow::on_btn_map_bigger_clicked()
+{
+	ui->gv_map->scale(1.2,1.2);
+}
+
+void MainWindow::on_btn_map_smaller_clicked()
+{
+	ui->gv_map->scale(1/1.2, 1/1.2);
 }

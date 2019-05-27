@@ -2,6 +2,10 @@
 #include <string>
 #include "CGlobalFunction.h"
 #include <set>
+void CAgentSystem::print_map_to_console()
+{
+	gridmap->printGridMap();
+}
 void CAgentSystem::print_pathpool_to_Console()
 {
 	std::cout <<"\npathpool print \n";
@@ -24,7 +28,7 @@ void CAgentSystem::print_pathpool_to_file(std::string filepath)
 		__file.close();
 		return;
 	}
-	__file << "# path pool has" << path_pool.size()<< "agents\n";
+	__file << "# path pool has " << path_pool.size()<< " agents\n";
 	__file << "# agent agent_path \n";
 
 	for (auto it = path_pool.begin(); it != path_pool.end(); it++) {
@@ -43,17 +47,13 @@ int CAgentSystem::resolve_conflicts()//静态全局处理，冲突一定能解决
 	/*
 	冲突处理策略：开销高的优先
 	*/
-	
-	auto iter1 = path_pool.begin(); iter1++;
-	auto jter = iter1->second.begin(); jter += 1;
-	iter1->second.insert(jter,11);
-	
+		
 	std::set<int> step_cach_set;
-
+	int result_last_conflicts = 0;//未解决冲突数
 	//取最长的路径作为循环次数
 	auto iter = path_pool.end(); iter--;
 	for (int i = 0; i < iter->second.size(); i++){
-		
+		step_cach_set.clear();
 		//对每个时刻一次遍历每个智能体动作
 		for (auto agent_it = path_pool.begin(); agent_it != path_pool.end(); agent_it++) {
 
@@ -66,20 +66,20 @@ int CAgentSystem::resolve_conflicts()//静态全局处理，冲突一定能解决
 					int before_int = i - 1 >= 0 ? i - 1 : 0; 
 					if (step_cach_set.count(agent_it->second.at(before_int)) == 0) {//冲突是否出现
 						step_cach_set.insert(agent_it->second.at(before_int));//冲突未出现
-						
-					}
-					else {
-						//冲突出现
 						agent_it->second.insert(agent_it->second.begin() + i, agent_it->second.at(before_int));
 						conflict_num++;
+					}
+					else {
+						//前一时刻的位置已占用
+						conflict_num++;
+						result_last_conflicts++;
 					}
 				}
 			}
 		}
-		step_cach_set.clear();
 	}
 	cost_time = clock() - this->begintime;
-	return 0;
+	return result_last_conflicts;
 }
 
 

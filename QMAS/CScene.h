@@ -2,6 +2,16 @@
 #include <qgraphicsscene.h>
 #include <QGraphicsSceneMouseEvent>
 #include "CPixMapItem.h"
+#include <sstream>
+struct Point
+{
+	int x;
+	int y;
+	Point(int xin, int yin) :x(xin), y(yin) {};
+	bool operator==(const Point& compare) {
+		return compare.x == x && compare.y == y;
+	}
+};
 
 class CScene :
 	public QGraphicsScene
@@ -10,12 +20,14 @@ private:
     CPixMapItem*** map;
     unsigned long long row,col;
     ColourIcon curcolour;
-	bool generate_init_or_goal;
-	//bool generate_goal_or_init;
     void generarMap();
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent);
 public:
+
+	std::vector <Point> init_pos_pool;
+	std::vector <Point> goal_pos_pool;
+
     CPixMapItem*** get_map();
     ColourIcon get_curcolour();
     void set_curcolour(ColourIcon colourin);

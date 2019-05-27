@@ -9,16 +9,7 @@
 #include <iostream>
 #include <vector>
 #include <QProcess>
-
-struct Point 
-{
-	int x;
-	int y;
-	Point(int xin, int yin) :x(xin), y(yin) {};
-	bool operator==(const Point & compare) {
-		return compare.x == x && compare.y == y;
-	}
-};
+#include <math.h>
 
 namespace Ui {
 class MainWindow;
@@ -35,12 +26,10 @@ private:
     int row_map;
     int col_map;
 
-	std::vector <Point> init_pos_pool;
-	std::vector <Point> goal_pos_pool;
-
+	void save_to_cacaed_file(QString filepath);
     void generate_map_by_file(QString filepath);
 	void generate_mas_by_file(QString filepath);
-	void generate_point_by_file(QString filepath);
+	void generate_path_by_file(QString filepath);
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
@@ -58,6 +47,8 @@ private slots:
     void on_btn_run_by_stage_clicked();
     void on_btn_reset_clicked();
     void on_btn_exit_clicked();
+    void on_btn_map_bigger_clicked();
+    void on_btn_map_smaller_clicked();
 };
 
 #endif // MAINWINDOW_H
