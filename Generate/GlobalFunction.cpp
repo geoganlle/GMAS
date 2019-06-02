@@ -44,11 +44,11 @@ void create_mas_task(int task_number) {
 		return;
 	}
 	for (int i = 0; i < task_number; i++) {
-		GenerateMap* map = new GenerateMap(30, 30);
+		GenerateMap* map = new GenerateMap(10, 10);
 		map->RandGenerateMap(0, 0.5);
 		map->PrintConsole();
 		map->WriteFile();
-		GenerateMAS* mas = new GenerateMAS(30, map);
+		GenerateMAS* mas = new GenerateMAS(20, map);
 		mas->RandGenerateAgent();
 		mas->PrintConsole();
 		mas->WriteFile();

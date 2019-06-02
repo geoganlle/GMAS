@@ -29,6 +29,35 @@ vector<int> string_spilt_to_int(const std::string& string_input)
 	return result;
 }
 
+bool resolve_self_loop(vector<int>& s)
+{
+	int delete_end_index = -1;
+	int len = static_cast<int>(s.size());
+	bool flag = false;
+	for (int i = 0; i < len; i++) {
+		delete_end_index = -1;
+		//奇数对称
+		for (int j = 1; j < len; j++) {
+			if (i - j < 0 || i + j >= len || s[i - j] != s[i + j])break;
+			delete_end_index = i + j;
+		}
+		//偶数对称
+		if (delete_end_index == -1) {
+			for (int j = 1; j < len; j++) {
+				if (i - j + 1 < 0 || i + j >= len || s[i - j + 1] != s[i + j])break;
+				delete_end_index = i + j;
+			}
+		}
+		if (delete_end_index != -1) {
+			if (i + 1 >= len || delete_end_index + 1 > len)continue;
+			s.erase(s.begin() + i + 1, s.begin() + delete_end_index + 1);
+			flag = true;
+			len = static_cast<int>(s.size());
+		}
+	}
+	return flag;
+}
+
 vector<string> readfile(string filename) {
 
 	std::string	line_string;
@@ -45,6 +74,17 @@ vector<string> readfile(string filename) {
 		std::cout << "ERROR: Could not open file " + filename << std::endl;;
 	}
 	return result_vector;
+}
+
+void get_gorge_test() {
+
+	CGridMap map("../cached/map.txt");
+	vector<int> re = map.get_gorge(57);
+	for (auto it=re.begin();it!=re.end();it++)
+	{
+		cout << *it<<" ";
+	}
+	cout << endl;
 }
 
 void test1()
@@ -78,30 +118,23 @@ void test1()
 void test2()
 {
 	CAgentSystem mas("../mas/10x10mas2.txt");
-	mas.run();
+	mas.Static_run();
 	mas.print_pathpool_to_Console();
-	switch (mas.resolve_conflicts())
-	{
-	case -1:;
-	case -2:;
-	case 0:;
-	default:
-		break;
-	};
-	mas.print_pathpool_to_Console();
+	mas.resolve_conflicts();
+	mas.print_pathpool_to_Console(); 
 
 }
 
 void test3()
 {
-	vector <string> masfilename_vector = readfile("../test/test_4.txt");
+	vector <string> masfilename_vector = readfile("../test/test_5.txt");
 	vector <stCAgentSystem> testresult_pool;
 	int resolve_count = 0;
 	for (int i=0;i<masfilename_vector.size();i++)
 	{
 		cout << "begin instance "<<i+1<<"\n";
 		CAgentSystem mas(masfilename_vector[i]);
-		mas.run();
+		mas.Static_run();
 		if(mas.resolve_conflicts()==0)resolve_count++;
 		stCAgentSystem temp(i,mas.get_cost_time(),mas.get_cost_expand(),mas.get_conflict_num());
 		testresult_pool.push_back(temp);
@@ -117,17 +150,26 @@ void test3()
 	}
 	cout << "总耗时: " << costtime << " 平均耗时:"<< costtime/testresult_pool.size();
 	cout << "\n总扩展节点: " << cost_expand << " 平均扩展节点:" << cost_expand / testresult_pool.size();
-	cout << "\n冲突总数: " << conflict << " 平均冲突数:" << conflict / testresult_pool.size();
+	cout << "\n总冲突数: " << conflict << " 平均冲突数:" << conflict / testresult_pool.size();
 }
 
-void runmas1()
+void runmas1()//静态多智能体路径规划
 {
 	string mas_filepath = "C:\\Users\\guzhe\\Desktop\\GMAS\\cached\\mas.txt";
 	string pathpool_filepath = "C:\\Users\\guzhe\\Desktop\\GMAS\\cached\\pathpool.txt";
 	CAgentSystem mas(mas_filepath);
-	mas.run();
-	mas.print_pathpool_to_Console();
+	mas.Static_run();
+	//mas.print_pathpool_to_Console();
 	mas.resolve_conflicts();
-	mas.print_pathpool_to_Console();
+	//mas.print_pathpool_to_Console();
 	mas.print_pathpool_to_file(pathpool_filepath);
+}
+void runmas2() //动态多智能体路径规划
+{
+	string mas_filepath = "C:\\Users\\guzhe\\Desktop\\GMAS\\cached\\mas.txt";
+	string pathpool_filepath = "C:\\Users\\guzhe\\Desktop\\GMAS\\cached\\pathpool.txt";
+	CAgentSystem mas(mas_filepath);
+	mas.Dynamic_run();
+	mas.print_pathpool_to_file(pathpool_filepath);
+	mas.print_pathpool_to_Console();
 }

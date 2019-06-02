@@ -31,6 +31,8 @@ Written by Geoganlle Goo
 #pragma once
 #include<iostream>
 #include<fstream>
+#include<vector>
+#include<algorithm>
 constexpr auto DIM = 8;//8个方向;
 
 struct stPoint {
@@ -41,9 +43,12 @@ struct stPoint {
 		x = cp.x;
 		y = cp.y;
 	};
-	bool operator==(const stPoint& point_input) { 
+	bool operator==(const stPoint& point_input) const {
 		return this->x == point_input.x && this->y == point_input.y; 
 	};
+	bool operator<(const stPoint& point_input) {
+		return y == point_input.y ? (x<point_input.x):y<point_input.y;
+	}
 };
 
 enum eDirection{EAST,SOUTH,WEST,NORTH,EN,ES,WS,WN,WAIT};//9个方向
@@ -204,6 +209,9 @@ public:
 	int hashpt(const stPoint& p);//将地图中的一个坐标映射到成一位数组的下标
 	stPoint unhash(int hash);//将一个数组下标映射成地图上的
 
+	std::vector<int> get_neighbor(const int & point_hash);
+	std::vector<int> get_gorge(const int & point_hash);
+
 	CGridMap(std::string pathname);//从文件中读取地图
 	~CGridMap();
 	
@@ -231,3 +239,4 @@ stPoint CGridMap::unhash(int hash)
 	return stPoint( hash % dimX_int ,hash / dimX_int );
 	//x,y
 }
+

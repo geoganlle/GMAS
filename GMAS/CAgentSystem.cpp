@@ -2,6 +2,7 @@
 #include <string>
 #include "CGlobalFunction.h"
 #include <set>
+#include <algorithm> 
 void CAgentSystem::print_map_to_console()
 {
 	gridmap->printGridMap();
@@ -45,7 +46,7 @@ void CAgentSystem::print_pathpool_to_file(std::string filepath)
 int CAgentSystem::resolve_conflicts()//静态全局处理，冲突一定能解决
 {
 	/*
-	冲突处理策略：开销高的优先
+	冲突处理策略：开销低的优先
 	*/
 		
 	std::set<int> step_cach_set;
@@ -141,18 +142,15 @@ CAgentSystem::~CAgentSystem()
 	//std::cout << "~CAgentSystem : CAgentSystem destructed\n" << std::endl;
 }
 
-int CAgentSystem::run()
-{/*	
-	agent_pool
-	path_pool
- */
+int CAgentSystem::Static_run()
+{
 	vector <bool> finish(agent_pool.size(),false);
 	bool continueloop=true;
 	while (continueloop) {
 		for (auto it = agent_pool.begin(); it != agent_pool.end(); it++) {
 			if (finish[it - agent_pool.begin()] == false) {
 				int temp_search_result = (*it)->search_step();
-				if (temp_search_result == 1 || temp_search_result == 2) {
+				if (temp_search_result == 1 || temp_search_result == 2|| temp_search_result==3) {
 					this->cost_expand += (*it)->get_expand_node_count();
 					path_pool.insert(pair <int, std::vector<int>>((*it)->get_agent_id(), (*it)->get_path()));
 					finish[it - agent_pool.begin()] = true;
@@ -172,3 +170,95 @@ int CAgentSystem::run()
 	}
 	return cost_expand; 
 }
+
+int CAgentSystem::Dynamic_run()
+{
+	//返回值 0:成功 | -1:死锁 | -2 可替换路径不存在
+	Static_run();//初始化路径
+	std::set<int> step_cach_set;
+	int result_last_conflicts = 0;//未解决冲突数
+	int path_max_longth = 0;
+	int check_count = 0;
+todo:
+	check_count++;
+	if (check_count>path_pool.size()*2) {//假设每个最多存在两个独立冲突
+		cost_time = clock() - this->begintime;
+		return -1;
+	}
+	step_cach_set.clear();
+	//调整检查冲突的循环总次数
+	auto pathmaxlength = std::max_element(path_pool.begin(),path_pool.end(), 
+		[](pair<int,std::vector<int>> l, pair<int, std::vector<int>> r) {
+			return l.second.size() < r.second.size();
+		});
+	path_max_longth = static_cast<int>(pathmaxlength->second.size());
+	for (int i = 0; i < path_max_longth; i++) {
+		//检查每个智能体
+		for (auto pathpool_it = path_pool.begin(); pathpool_it != path_pool.end(); pathpool_it++) {
+			if (i >= pathpool_it->second.size())continue;//数组越界检查
+			//删除最后两个
+			if (i == (pathpool_it->second.size() - 1)) {
+				step_cach_set.erase(pathpool_it->second.at(i));
+				int j = i - 1;
+				if (j >= 0)step_cach_set.erase(pathpool_it->second.at(j));
+			}
+			//检查冲突是否出现
+			if (step_cach_set.count(pathpool_it->second.at(i)) == 0) { 
+				//冲突未出现
+				step_cach_set.insert(pathpool_it->second.at(i));
+				//避免"擦肩而过"
+				int eraseindex = i - 2;
+				if (eraseindex >= 0)step_cach_set.erase(pathpool_it->second.at(eraseindex));
+			}
+			else {
+				//冲突已出现
+				vector<int> gorge = gridmap->get_gorge(pathpool_it->second.at(i));
+				stPoint initpoint = pathpool_it->second.front();//替换路径的开始节点 初始化
+				stPoint goalpoint = pathpool_it->second.back();	//替换路径的最终节点
+				//开始节点为峡谷中最先在路径中出现的点
+				for (auto conflict_begin = pathpool_it->second.begin()+1; conflict_begin != pathpool_it->second.end(); conflict_begin++)
+				{
+					auto findindex = find(gorge.begin(), gorge.end(), *conflict_begin);
+					if (findindex != gorge.end())
+					{
+						initpoint = gridmap->unhash(*(conflict_begin-1));
+						break;
+					}
+				}
+				for (auto conflict_end = pathpool_it->second.rbegin()+1; conflict_end != pathpool_it->second.rend(); conflict_end++)
+				{
+					auto findindex = find(gorge.begin(), gorge.end(), *conflict_end);
+					if (findindex != gorge.end())
+					{
+						goalpoint = gridmap->unhash(*(conflict_end-1));
+						break;
+					}
+				}
+				CAgent *childAgent=new CAgent(-1, initpoint,goalpoint,gridmap,distance);
+				int search_result  = childAgent->search_step(gorge);
+				if (search_result != 1) { //子节点查找失败
+					cost_time = clock() - this->begintime;
+					return -2; 
+				}
+				std::cout <<"CAgent end search" <<clock() - this->begintime << std::endl;
+
+				vector<int> childAgent_path = childAgent->get_path();//起点和终点之间的串进行替换
+				delete childAgent;
+				auto erasebegin = std::find(pathpool_it->second.begin(), pathpool_it->second.end(), gridmap->hashpt(initpoint));
+				auto eraseend = std::find(pathpool_it->second.begin(), pathpool_it->second.end(), gridmap->hashpt(goalpoint));
+				if (eraseend - erasebegin < 2)return -1;//无法解决该冲突
+				pathpool_it->second.erase(erasebegin+1,eraseend);
+				eraseend = std::find(pathpool_it->second.begin(), pathpool_it->second.end(), gridmap->hashpt(goalpoint));
+				if(childAgent_path.size()>2)
+				pathpool_it->second.insert(eraseend,childAgent_path.begin()+1,childAgent_path.end()-1);
+				resolve_self_loop(pathpool_it->second);
+				//解决冲突之后重新进行冲突检测
+				goto todo;
+				
+			}
+		}
+	}	
+	cost_time = clock() - this->begintime;
+	return 0;
+}
+ 

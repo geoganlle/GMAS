@@ -262,7 +262,11 @@ void MainWindow::on_btn_run_global_clicked()
 
 void MainWindow::on_btn_run_Dynamic_clicked()
 {
-
+	save_to_cacaed_file("C:\\Users\\guzhe\\Desktop\\GMAS\\cached");
+	QProcess* process = new QProcess(this);
+	QString run_global_exe = "C:\\Users\\guzhe\\Desktop\\GMAS\\cached\\GMAS2.exe";
+	process->execute(run_global_exe);
+	generate_path_by_file("C:\\Users\\guzhe\\Desktop\\GMAS\\cached");
 }
 
 void MainWindow::on_btn_run_by_step_clicked()
@@ -281,6 +285,7 @@ void MainWindow::on_btn_reset_clicked ()
 	scene = nullptr;
 	row_map = ui->spin_row->value();
 	col_map = ui->spin_row->value();
+	scene = new CScene(row_map,col_map);
 	ui->gv_map->setScene(scene);
 }
 

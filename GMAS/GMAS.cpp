@@ -9,7 +9,7 @@ using namespace std;
 
 int main()
 {
-	runmas1();
+	runmas2();
 
     //std::cout << "\nHello World!\n"; 
 }

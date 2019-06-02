@@ -44,6 +44,82 @@ bool* CGridMap::getNeighbor(const stPoint& pos) const
 	return neighbor;
 }
 
+std::vector<int> CGridMap::get_neighbor(const int& point_hash)
+{
+	std::vector<int> neighbor_vector;
+	stPoint pos = unhash(point_hash);
+	bool* neighbor_bp = getNeighbor(pos);
+	for (int i=0;i<DIM;i++)
+	{
+		if (neighbor_bp[i] == 1)neighbor_vector.push_back(hashpt(dir_move_stPoint(pos,i)));
+	}
+	delete [] neighbor_bp;
+	return neighbor_vector;
+}
+
+std::vector<int> CGridMap::get_gorge(const int& point_hash)
+{
+	std::vector<int> gorge_vector;
+	gorge_vector.push_back(point_hash);
+	std::vector<int> expand_queue;
+	expand_queue.push_back(point_hash);
+	while (!expand_queue.empty()) {
+		int cur_point=expand_queue.back();
+		std::vector<int> neighbor = get_neighbor(cur_point);
+		expand_queue.pop_back();
+		if (neighbor.size() != 2) {
+			continue;
+		}
+		auto find_cur_point = std::find(gorge_vector.begin(), gorge_vector.end(), cur_point);
+		auto find_first_neighbor = std::find(gorge_vector.begin(),gorge_vector.end(),neighbor[0]);
+		auto find_second_neighbor = std::find(gorge_vector.begin(), gorge_vector.end(), neighbor[1]);
+		if (find_first_neighbor == gorge_vector.end()&& find_second_neighbor == gorge_vector.end()) {
+			if (find_cur_point == gorge_vector.end()) {
+			continue;
+			}
+			gorge_vector.insert(find_cur_point, neighbor[0]);
+			find_cur_point = std::find(gorge_vector.begin(), gorge_vector.end(), cur_point);
+			gorge_vector.insert((find_cur_point + 1), neighbor[1]);
+			expand_queue.push_back(neighbor[0]);
+			expand_queue.push_back(neighbor[1]);
+			continue;
+		}
+		if (find_first_neighbor == gorge_vector.end()) {
+			if (1 == find_second_neighbor - find_cur_point)
+			{
+				gorge_vector.insert(find_cur_point, neighbor[0]);
+			}
+			else if (1 == find_cur_point- find_second_neighbor)
+			{
+				gorge_vector.insert(find_cur_point+1, neighbor[0]);
+			}
+			else {
+				std::cout<<"ERRO:CGridMap::get_gorge insert first_neighbor"<<std::endl;
+				return gorge_vector;
+			}
+			expand_queue.push_back(neighbor[0]);
+			continue;
+		}
+		if (find_second_neighbor == gorge_vector.end()) {
+			if (1 == find_first_neighbor - find_cur_point)
+			{
+				gorge_vector.insert(find_cur_point, neighbor[1]);
+			}
+			else if (1 == find_cur_point - find_first_neighbor)
+			{
+				gorge_vector.insert(find_cur_point + 1, neighbor[1]);
+			}
+			else {
+				std::cout << "ERRO:CGridMap::get_gorge insert second_neighbor" << std::endl;
+				return gorge_vector;
+			}
+			expand_queue.push_back(neighbor[1]);
+			continue;
+		}
+	};
+	return gorge_vector;
+}
+
 CGridMap::CGridMap(std::string pathname)
 {
 	std::string	line_string;

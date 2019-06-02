@@ -35,7 +35,8 @@ public:
 	CAgentSystem(std::string pathname);
 	~CAgentSystem();
 
-	int run();//
+	int Static_run();//静态路径规划
+	int Dynamic_run();//动态路径规划
 
 	clock_t get_cost_time();//耗时
 	int get_cost_expand();//总开销
