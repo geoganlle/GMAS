@@ -33,7 +33,6 @@ CScene::CScene(int rowin, int colin)
     curcolour=whiteio;
 	//generate_goal_or_init = false;
     generarMap();
-
 }
 
 CScene::~CScene()
@@ -54,16 +53,12 @@ CScene::~CScene()
 void CScene::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent){
 
     QPointF pos = mouseEvent->lastScenePos();
-
     int x = pos.toPoint().x() / 20 / 1;
     int y = pos.toPoint().y() / 20 / 1;
-
     if (x<0 || y<0 || x>=static_cast<int>(col) || y>=static_cast<int>(row))
             return;
-
     if (mouseEvent->button()==Qt::RightButton)
         map[y][x]->set_colour(whiteio);
-
     else if (mouseEvent->button()==Qt::LeftButton){
         //TODO:
 		/*

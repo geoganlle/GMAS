@@ -240,8 +240,7 @@ todo:
 					cost_time = clock() - this->begintime;
 					return -2; 
 				}
-				std::cout <<"CAgent end search" <<clock() - this->begintime << std::endl;
-
+				//std::cout <<"CAgent end search" <<clock() - this->begintime << std::endl;
 				vector<int> childAgent_path = childAgent->get_path();//起点和终点之间的串进行替换
 				delete childAgent;
 				auto erasebegin = std::find(pathpool_it->second.begin(), pathpool_it->second.end(), gridmap->hashpt(initpoint));
@@ -251,10 +250,9 @@ todo:
 				eraseend = std::find(pathpool_it->second.begin(), pathpool_it->second.end(), gridmap->hashpt(goalpoint));
 				if(childAgent_path.size()>2)
 				pathpool_it->second.insert(eraseend,childAgent_path.begin()+1,childAgent_path.end()-1);
-				resolve_self_loop(pathpool_it->second);
+				resolve_self_loop(pathpool_it->second);				
 				//解决冲突之后重新进行冲突检测
 				goto todo;
-				
 			}
 		}
 	}	

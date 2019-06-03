@@ -38,14 +38,16 @@ bool resolve_self_loop(vector<int>& s)
 		delete_end_index = -1;
 		//奇数对称
 		for (int j = 1; j < len; j++) {
-			if (i - j < 0 || i + j >= len || s[i - j] != s[i + j])break;
-			delete_end_index = i + j;
+			int le = i - j, ri = i + j;
+			if (le < 0 || ri >= len || s[le] != s[ri])break;
+			delete_end_index = ri;
 		}
 		//偶数对称
 		if (delete_end_index == -1) {
 			for (int j = 1; j < len; j++) {
-				if (i - j + 1 < 0 || i + j >= len || s[i - j + 1] != s[i + j])break;
-				delete_end_index = i + j;
+				int le = i - j + 1, ri = i + j;
+				if (le < 0 || ri >= len || s[le] != s[ri])break;
+				delete_end_index = ri;
 			}
 		}
 		if (delete_end_index != -1) {
@@ -171,5 +173,4 @@ void runmas2() //动态多智能体路径规划
 	CAgentSystem mas(mas_filepath);
 	mas.Dynamic_run();
 	mas.print_pathpool_to_file(pathpool_filepath);
-	mas.print_pathpool_to_Console();
 }

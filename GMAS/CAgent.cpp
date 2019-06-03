@@ -27,7 +27,7 @@ CAgent::CAgent(int agentid_i, stPoint init_i, stPoint goal_i, CGridMap* gridmap_
 		});
 	*/
 	int resize_length = gridmap->getDim().x * gridmap->getDim().y;
-	visited.resize(resize_length);
+	visited.resize(resize_length,false);
 	visited[gridmap->hashpt(temp.location)]=true;
 
 	search_count = 0;
@@ -71,6 +71,7 @@ int CAgent::search_step()
 		int dis = cdistance->getDistance(expandnode.location, goal);
 		expandnode.hn =	( dis == INT_MAX ) ? h(expandnode.location,goal,gridmap):dis;
 		expandnode.fn = expandnode.gn + expandnode.hn;
+		visited[gridmap->hashpt(expandnode.location)] = true;
 		search_node_pool.push_back(expandnode);
 		expand_node_count++;
 		/*更新cdistance表*/
@@ -97,11 +98,11 @@ int CAgent::search_step(const std::vector<int>& ignoreNodeVector)
 	while (result==0)
 	{
 		if (search_count > MAX_SEARCH_COUNT) { result = 2; break;}//搜索节点过多
-		if (search_node_pool.empty()) { result = 3; break; }//目的节点不可达
+		if (search_node_pool.empty()) { result = 3; break; }//目的节点不可达	
 		curnode = search_node_pool.front();
 		visited[gridmap->hashpt(curnode.location)] = true;
 		search_node_pool.erase(search_node_pool.begin());
-		close_search_node_pool.push_back(curnode);
+		close_search_node_pool.push_back(curnode);		
 		if (curnode.location == goal) { result = 1; break; };//已找到目标节点
 		search_count++;//搜索计数
 		bool* neighbor_node = gridmap->getNeighbor(curnode.location);
@@ -122,6 +123,7 @@ int CAgent::search_step(const std::vector<int>& ignoreNodeVector)
 				int dis = cdistance->getDistance(expandnode.location, goal);
 				expandnode.hn = (dis == INT_MAX) ? h(expandnode.location, goal, gridmap) : dis;
 				expandnode.fn = expandnode.gn + expandnode.hn;
+				visited[gridmap->hashpt(expandnode.location)] = true;
 				search_node_pool.push_back(expandnode);
 				expand_node_count++;
 				/*更新cdistance表*/

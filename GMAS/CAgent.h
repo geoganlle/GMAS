@@ -5,8 +5,7 @@
 #include<vector>
 #include <map>
 #include <unordered_set>
-
-constexpr auto MAX_SEARCH_COUNT = 10000;
+constexpr auto MAX_SEARCH_COUNT = 1000;
 
 struct stSearch_Node {//用于A*搜索过程的结构体
 	stPoint location;//坐标
