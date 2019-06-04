@@ -23,7 +23,7 @@ private:
     Ui::MainWindow *ui;
     CScene* scene;
 
-    int row_map;//µØÍ¼³ß´ç
+    int row_map;//ï¿½ï¿½Í¼ï¿½ß´ï¿½
     int col_map;
 
 	int curTime;
@@ -54,6 +54,7 @@ private slots:
     void on_btn_map_smaller_clicked();
     void on_btn_reset_mas_clicked();
     void on_btn_reset_map_clicked();
+    void on_btn_run_reset_clicked();
 };
 
 #endif // MAINWINDOW_H

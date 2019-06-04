@@ -63,6 +63,7 @@ public:
     QFrame *line_5;
     QLabel *lab_title_output_2;
     QPushButton *btn_reset_map;
+    QPushButton *btn_run_reset;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -221,6 +222,9 @@ public:
         btn_reset_map = new QPushButton(centralWidget);
         btn_reset_map->setObjectName(QString::fromUtf8("btn_reset_map"));
         btn_reset_map->setGeometry(QRect(600, 475, 60, 40));
+        btn_run_reset = new QPushButton(centralWidget);
+        btn_run_reset->setObjectName(QString::fromUtf8("btn_run_reset"));
+        btn_run_reset->setGeometry(QRect(520, 340, 30, 30));
         MainWindow->setCentralWidget(centralWidget);
 
         retranslateUi(MainWindow);
@@ -254,6 +258,7 @@ public:
         btn_map_smaller->setText(QApplication::translate("MainWindow", "\347\274\251\345\260\217", nullptr));
         lab_title_output_2->setText(QApplication::translate("MainWindow", "\350\260\203\346\225\264\357\274\232", nullptr));
         btn_reset_map->setText(QApplication::translate("MainWindow", "\351\207\215\347\275\256\345\234\260\345\233\276", nullptr));
+        btn_run_reset->setText(QApplication::translate("MainWindow", "\351\207\215\347\275\256", nullptr));
     } // retranslateUi
 
 };

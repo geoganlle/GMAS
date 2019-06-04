@@ -278,14 +278,10 @@ void MainWindow::on_btn_run_Dynamic_clicked()
 
 void MainWindow::on_btn_run_by_step_clicked()
 {
-	
 	if (curTime == -1) { 
 		scene->clear_path(); 
-		curTime = 0;
+		curTime = 1;
 	}
-	std::string pathstring = "curTime:" + std::to_string(curTime) + "curAgent" + std::to_string(curAgent);
-	ui->textBrowser->append(QString::fromStdString(pathstring));
-
 	if (curTime > pathpool[curAgent].size()-1)
 	{
 		goto endfun;
@@ -302,6 +298,8 @@ void MainWindow::on_btn_run_by_step_clicked()
 	if (curTime != 0) {
 		int cur_point_row = pathpool[curAgent][curTime] / col_map;
 		int cur_point_col = pathpool[curAgent][curTime] % col_map;
+		std::string pathstring = "curTime:" + std::to_string(curTime) + " curAgent:" + std::to_string(curAgent)+" curPosition"+ std::to_string(pathpool[curAgent][curTime]);
+		ui->textBrowser->append(QString::fromStdString(pathstring));
 		scene->get_map()[cur_point_row][cur_point_col]->set_colour(greenio);
 		int beforetime = curTime - 1;
 		if (beforetime > 0) {
@@ -320,7 +318,10 @@ void MainWindow::on_btn_run_by_step_clicked()
 
 void MainWindow::on_btn_run_by_stage_clicked()
 {
-	curTime++;
+	for (int i = 0; i < pathpool.size(); i++)
+	{
+		on_btn_run_by_step_clicked();
+	}
 }
 
 void MainWindow::on_btn_exit_clicked()
@@ -353,4 +354,11 @@ void MainWindow::on_btn_reset_map_clicked()
 	col_map = ui->spin_row->value();
 	scene = new CScene(row_map, col_map);
 	ui->gv_map->setScene(scene);
+}
+
+void MainWindow::on_btn_run_reset_clicked()
+{
+	curTime = -1;
+	curAgent = 0;
+	scene->clear_path();
 }

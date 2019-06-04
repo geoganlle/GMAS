@@ -556,6 +556,19 @@
      <string>重置地图</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="btn_run_reset">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>340</y>
+      <width>30</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>重置</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

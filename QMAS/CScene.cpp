@@ -31,7 +31,7 @@ void CScene::clear_path()
 	{
 		for (int j=0;j<col_scene;j++)
 		{
-			if (map_pixmap_scene[i][j]->get_ColourIcon() == pregreenio) 
+			if (map_pixmap_scene[i][j]->get_ColourIcon() == pregreenio|| map_pixmap_scene[i][j]->get_ColourIcon() == greenio)
 			{
 				map_pixmap_scene[i][j]->set_colour(whiteio);
 			};
