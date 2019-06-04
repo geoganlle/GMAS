@@ -54,7 +54,7 @@ int CAgentSystem::resolve_conflicts()//静态全局处理，冲突一定能解决
 	//取最长的路径作为循环次数
 	auto iter = path_pool.end(); iter--;
 	for (int i = 0; i < iter->second.size(); i++){
-		step_cach_set.clear();
+		//step_cach_set.clear();
 		//对每个时刻一次遍历每个智能体动作
 		for (auto agent_it = path_pool.begin(); agent_it != path_pool.end(); agent_it++) {
 
@@ -62,6 +62,8 @@ int CAgentSystem::resolve_conflicts()//静态全局处理，冲突一定能解决
 				
 				if (step_cach_set.count(agent_it->second.at(i))== 0) {//检查冲突是否出现
 					step_cach_set.insert(agent_it->second.at(i));//冲突未出现
+					int j = i - 2;
+					if (j >= 0)step_cach_set.erase(agent_it->second.at(j));
 				}
 				else {
 					int before_int = i - 1 >= 0 ? i - 1 : 0; 

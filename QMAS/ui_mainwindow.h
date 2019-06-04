@@ -38,7 +38,7 @@ public:
     QLabel *lab_title_input_2;
     QTextBrowser *textBrowser;
     QFrame *line_1;
-    QPushButton *btn_reset;
+    QPushButton *btn_reset_mas;
     QLabel *label_name_row;
     QFrame *line_3;
     QPushButton *btn_run_global;
@@ -62,6 +62,7 @@ public:
     QPushButton *btn_map_smaller;
     QFrame *line_5;
     QLabel *lab_title_output_2;
+    QPushButton *btn_reset_map;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -87,7 +88,7 @@ public:
         btn_run_by_step->setCheckable(false);
         btn_exit = new QPushButton(centralWidget);
         btn_exit->setObjectName(QString::fromUtf8("btn_exit"));
-        btn_exit->setGeometry(QRect(630, 475, 100, 40));
+        btn_exit->setGeometry(QRect(670, 475, 60, 40));
         btn_generate_obstacle = new QPushButton(centralWidget);
         btn_generate_obstacle->setObjectName(QString::fromUtf8("btn_generate_obstacle"));
         btn_generate_obstacle->setGeometry(QRect(600, 190, 60, 30));
@@ -111,9 +112,9 @@ public:
         line_1->setGeometry(QRect(520, 100, 210, 15));
         line_1->setFrameShape(QFrame::HLine);
         line_1->setFrameShadow(QFrame::Sunken);
-        btn_reset = new QPushButton(centralWidget);
-        btn_reset->setObjectName(QString::fromUtf8("btn_reset"));
-        btn_reset->setGeometry(QRect(520, 475, 100, 40));
+        btn_reset_mas = new QPushButton(centralWidget);
+        btn_reset_mas->setObjectName(QString::fromUtf8("btn_reset_mas"));
+        btn_reset_mas->setGeometry(QRect(530, 475, 60, 40));
         label_name_row = new QLabel(centralWidget);
         label_name_row->setObjectName(QString::fromUtf8("label_name_row"));
         label_name_row->setGeometry(QRect(644, 130, 20, 20));
@@ -217,6 +218,9 @@ public:
         lab_title_output_2 = new QLabel(centralWidget);
         lab_title_output_2->setObjectName(QString::fromUtf8("lab_title_output_2"));
         lab_title_output_2->setGeometry(QRect(520, 230, 40, 20));
+        btn_reset_map = new QPushButton(centralWidget);
+        btn_reset_map->setObjectName(QString::fromUtf8("btn_reset_map"));
+        btn_reset_map->setGeometry(QRect(600, 475, 60, 40));
         MainWindow->setCentralWidget(centralWidget);
 
         retranslateUi(MainWindow);
@@ -234,7 +238,7 @@ public:
         lab_title_input->setText(QApplication::translate("MainWindow", "\350\276\223\345\205\245", nullptr));
         btn_run_by_stage->setText(QApplication::translate("MainWindow", "\345\215\225\351\230\266\346\256\265\350\277\220\350\241\214", nullptr));
         lab_title_input_2->setText(QApplication::translate("MainWindow", "\346\211\213\345\212\250\350\276\223\345\205\245\357\274\232", nullptr));
-        btn_reset->setText(QApplication::translate("MainWindow", "\351\207\215\347\275\256", nullptr));
+        btn_reset_mas->setText(QApplication::translate("MainWindow", "\351\207\215\347\275\256\344\273\273\345\212\241", nullptr));
         label_name_row->setText(QApplication::translate("MainWindow", "\350\241\214", nullptr));
         btn_run_global->setText(QApplication::translate("MainWindow", "\351\235\231\346\200\201\350\247\204\345\210\222", nullptr));
         btn_run_Dynamic->setText(QApplication::translate("MainWindow", "\345\212\250\346\200\201\350\247\204\345\210\222", nullptr));
@@ -249,6 +253,7 @@ public:
         btn_map_bigger->setText(QApplication::translate("MainWindow", "\346\211\251\345\244\247", nullptr));
         btn_map_smaller->setText(QApplication::translate("MainWindow", "\347\274\251\345\260\217", nullptr));
         lab_title_output_2->setText(QApplication::translate("MainWindow", "\350\260\203\346\225\264\357\274\232", nullptr));
+        btn_reset_map->setText(QApplication::translate("MainWindow", "\351\207\215\347\275\256\345\234\260\345\233\276", nullptr));
     } // retranslateUi
 
 };

@@ -23,8 +23,12 @@ private:
     Ui::MainWindow *ui;
     CScene* scene;
 
-    int row_map;
+    int row_map;//µØÍ¼³ß´ç
     int col_map;
+
+	int curTime;
+	int curAgent;
+	std::vector<std::vector<int>> pathpool;
 
 	void save_to_cacaed_file(QString filepath);
     void generate_map_by_file(QString filepath);
@@ -45,10 +49,11 @@ private slots:
     void on_btn_run_Dynamic_clicked();
     void on_btn_run_by_step_clicked();
     void on_btn_run_by_stage_clicked();
-    void on_btn_reset_clicked();
     void on_btn_exit_clicked();
     void on_btn_map_bigger_clicked();
     void on_btn_map_smaller_clicked();
+    void on_btn_reset_mas_clicked();
+    void on_btn_reset_map_clicked();
 };
 
 #endif // MAINWINDOW_H

@@ -104,9 +104,9 @@ void MainWindow::generate_mas_by_file(QString filepath)
 	std::vector<std::string> point_line_vector;
 	std::string map_file_path_name;
 	if (file.is_open()) {
-		while (std::getline(file, line_string) && line_string.size()) {//��һ���г��Ȳ�Ϊ0
+		while (std::getline(file, line_string) && line_string.size()) {
 			if (line_string[0] == '#')continue;
-			if (line_string[0] == '.') {
+			if (line_string[0] == '.'|| line_string[0] == 'C') {
 				generate_map_by_file(QString::fromStdString(line_string));
 				continue;
 			}
@@ -134,6 +134,7 @@ void MainWindow::generate_mas_by_file(QString filepath)
 
 void MainWindow::generate_path_by_file(QString filepath)
 {
+	scene->clear_path();
 	std::string	line_string;
 	std::ifstream	file(filepath.toStdString()+"\\pathpool.txt");
 	std::vector<std::string> line_vector;
@@ -154,7 +155,8 @@ void MainWindow::generate_path_by_file(QString filepath)
 		std::vector<int> point_pool = string_spilt_to_int(line_vector.at(i));
 		int agent_number = point_pool.front();
 		if (point_pool.size() < 4)continue;
-
+		std::vector<int> path(point_pool.begin()+1,point_pool.end());
+		pathpool.push_back(path);
 		//为出发点和终点设置tip
 		int init_row = *(point_pool.begin() + 1) / col_map;
 		int init_col = *(point_pool.begin() + 1) % col_map;
@@ -171,9 +173,10 @@ void MainWindow::generate_path_by_file(QString filepath)
 		for (auto it = point_pool.begin() + 2; it != point_pool.end()-1; it++) {
 			int point_row = (*it / col_map);
 			int point_col = (*it % col_map);
-			scene->get_map()[point_row][point_col]->set_colour(greenio);
+			if(scene->get_map()[point_row][point_col]->get_ColourIcon()==whiteio)
+			scene->get_map()[point_row][point_col]->set_colour(pregreenio);
 			std::stringstream ss;
-			ss << agent_number << "("<< (it - point_pool.begin() - 1)<<")";
+			ss <<"["<< agent_number << "]("<< (it - point_pool.begin() - 1)<<")";
 			std::string tips;
 			ss >> tips;
 			scene->get_map()[point_row][point_col]->setToolTip(scene->get_map()[point_row][point_col]->toolTip()+" "+QString::fromStdString(tips));
@@ -186,6 +189,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+	curTime = -1;
+	curAgent = 0;
     ui->setupUi(this);
     scene=nullptr;
 	row_map = ui->spin_row->value();
@@ -222,11 +227,13 @@ void MainWindow::on_btn_openfile_clicked()
 void MainWindow::on_spin_col_valueChanged(int arg1)
 {
     col_map=arg1;
+	row_map = ui->spin_row->value();
 }
 
 void MainWindow::on_spin_row_valueChanged(int arg1)
 {
     row_map=arg1;
+	col_map = ui->spin_col->value();
 }
 
 void MainWindow::on_btn_generate_map_clicked()
@@ -271,22 +278,49 @@ void MainWindow::on_btn_run_Dynamic_clicked()
 
 void MainWindow::on_btn_run_by_step_clicked()
 {
+	
+	if (curTime == -1) { 
+		scene->clear_path(); 
+		curTime = 0;
+	}
+	std::string pathstring = "curTime:" + std::to_string(curTime) + "curAgent" + std::to_string(curAgent);
+	ui->textBrowser->append(QString::fromStdString(pathstring));
 
+	if (curTime > pathpool[curAgent].size()-1)
+	{
+		goto endfun;
+	}
+	if (curTime==pathpool[curAgent].size()-1 ) {
+		for (int i=1;i< pathpool[curAgent].size()-1;i++)
+		{
+			int cur_point_row = pathpool[curAgent][i] / col_map;
+			int cur_point_col = pathpool[curAgent][i] % col_map;
+			scene->get_map()[cur_point_row][cur_point_col]->set_colour(greenio);
+		}
+		goto endfun;
+	}
+	if (curTime != 0) {
+		int cur_point_row = pathpool[curAgent][curTime] / col_map;
+		int cur_point_col = pathpool[curAgent][curTime] % col_map;
+		scene->get_map()[cur_point_row][cur_point_col]->set_colour(greenio);
+		int beforetime = curTime - 1;
+		if (beforetime > 0) {
+			int cur_point_row = pathpool[curAgent][beforetime] / col_map;
+			int cur_point_col = pathpool[curAgent][beforetime] % col_map;
+			scene->get_map()[cur_point_row][cur_point_col]->set_colour(pregreenio);
+		}
+	}
+	endfun:
+	if (curAgent == static_cast<int>(pathpool.size()-1)) {
+		curTime++;
+		curAgent = 0;
+	}
+	else curAgent++;
 }
 
 void MainWindow::on_btn_run_by_stage_clicked()
 {
-
-}
-
-void MainWindow::on_btn_reset_clicked ()
-{
-	delete scene;
-	scene = nullptr;
-	row_map = ui->spin_row->value();
-	col_map = ui->spin_row->value();
-	scene = new CScene(row_map,col_map);
-	ui->gv_map->setScene(scene);
+	curTime++;
 }
 
 void MainWindow::on_btn_exit_clicked()
@@ -302,4 +336,21 @@ void MainWindow::on_btn_map_bigger_clicked()
 void MainWindow::on_btn_map_smaller_clicked()
 {
 	ui->gv_map->scale(1/1.2, 1/1.2);
+}
+
+void MainWindow::on_btn_reset_mas_clicked()
+{
+	scene->clear_init_and_pool();
+	scene->clear_path();
+}
+
+void MainWindow::on_btn_reset_map_clicked()
+{
+	pathpool.clear();
+	delete scene;
+	scene = nullptr;
+	row_map = ui->spin_row->value();
+	col_map = ui->spin_row->value();
+	scene = new CScene(row_map, col_map);
+	ui->gv_map->setScene(scene);
 }

@@ -12,4 +12,5 @@ map/
 mas/
 *.cbt
 *.vsp
+*.exe
 build-QMAS-Desktop_Qt_5_12_2_MSVC2017_64bit2-Debug/
