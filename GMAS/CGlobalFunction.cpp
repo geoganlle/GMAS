@@ -155,6 +155,33 @@ void test3()
 	cout << "\n总冲突数: " << conflict << " 平均冲突数:" << conflict / testresult_pool.size();
 }
 
+void test4()
+{
+	vector <string> masfilename_vector = readfile("../test/test_4.txt");
+	vector <stCAgentSystem> testresult_pool;
+	int resolve_count = 0;
+	for (int i = 0; i < masfilename_vector.size(); i++)
+	{
+		cout << "begin instance " << i + 1 << "\n";
+		CAgentSystem mas(masfilename_vector[i]);
+		if (0== mas.Dynamic_run())resolve_count++;
+		stCAgentSystem temp(i, mas.get_cost_time(), mas.get_cost_expand(), mas.get_conflict_num());
+		testresult_pool.push_back(temp);
+	}
+	cout << "\n共解决了" << resolve_count << "/" << masfilename_vector.size() << "个多智能体系统\n";
+	clock_t costtime = 0;
+	int cost_expand = 0;
+	int conflict = 0;
+	for (int i = 0; i < testresult_pool.size(); i++) {
+		costtime += testresult_pool[i].cost_time;
+		cost_expand += testresult_pool[i].cost_expand;
+		conflict += testresult_pool[i].conflict_num;
+	}
+	cout << "总耗时: " << costtime << " 平均耗时:" << costtime / testresult_pool.size();
+	cout << "\n总扩展节点: " << cost_expand << " 平均扩展节点:" << cost_expand / testresult_pool.size();
+	cout << "\n总冲突数: " << conflict << " 平均冲突数:" << conflict / testresult_pool.size();
+}
+
 void runmas1()//静态多智能体路径规划
 {
 	string mas_filepath = "C:\\Users\\guzhe\\Desktop\\GMAS\\cached\\mas.txt";

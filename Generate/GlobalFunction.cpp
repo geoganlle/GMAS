@@ -3,7 +3,7 @@
 GlobalFunction::GlobalFunction()
 {
 }
-
+	
 
 GlobalFunction::~GlobalFunction()
 {
@@ -44,11 +44,11 @@ void create_mas_task(int task_number) {
 		return;
 	}
 	for (int i = 0; i < task_number; i++) {
-		GenerateMap* map = new GenerateMap(10, 10);
-		map->RandGenerateMap(0, 0.5);
+		GenerateMap* map = new GenerateMap(50, 50);
+		map->RandGenerateMap(0, 0.75);
 		map->PrintConsole();
 		map->WriteFile();
-		GenerateMAS* mas = new GenerateMAS(20, map);
+		GenerateMAS* mas = new GenerateMAS(15, map);
 		mas->RandGenerateAgent();
 		mas->PrintConsole();
 		mas->WriteFile();

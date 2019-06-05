@@ -213,6 +213,7 @@ todo:
 				if (eraseindex >= 0)step_cach_set.erase(pathpool_it->second.at(eraseindex));
 			}
 			else {
+				conflict_num++;
 				//冲突已出现
 				vector<int> gorge = gridmap->get_gorge(pathpool_it->second.at(i));
 				stPoint initpoint = pathpool_it->second.front();//替换路径的开始节点 初始化
@@ -238,10 +239,12 @@ todo:
 				}
 				CAgent *childAgent=new CAgent(-1, initpoint,goalpoint,gridmap,distance);
 				int search_result  = childAgent->search_step(gorge);
+				cost_expand += childAgent->get_expand_node_count();
 				if (search_result != 1) { //子节点查找失败
 					cost_time = clock() - this->begintime;
 					return -2; 
 				}
+				
 				//std::cout <<"CAgent end search" <<clock() - this->begintime << std::endl;
 				vector<int> childAgent_path = childAgent->get_path();//起点和终点之间的串进行替换
 				delete childAgent;

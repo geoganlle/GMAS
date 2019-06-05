@@ -300,6 +300,7 @@ void MainWindow::on_btn_run_by_step_clicked()
 		int cur_point_col = pathpool[curAgent][curTime] % col_map;
 		std::string pathstring = "curTime:" + std::to_string(curTime) + " curAgent:" + std::to_string(curAgent)+" curPosition"+ std::to_string(pathpool[curAgent][curTime]);
 		ui->textBrowser->append(QString::fromStdString(pathstring));
+		if(scene->get_map()[cur_point_row][cur_point_col]->get_ColourIcon()== whiteio)
 		scene->get_map()[cur_point_row][cur_point_col]->set_colour(greenio);
 		int beforetime = curTime - 1;
 		if (beforetime > 0) {

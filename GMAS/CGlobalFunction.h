@@ -21,7 +21,6 @@ void get_gorge_test();//²âÊÔmapµÄget_gorgeº¯Êı
 void test1();//²âÊÔmap bfs agent
 void test2();//²âÊÔagentsystem
 void test3();//²âÊÔ¶à¸öagentsystem
+void test4();
 void runmas1();
 void runmas2();
-void runmas3();
-void runmas4();

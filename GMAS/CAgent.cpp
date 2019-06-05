@@ -155,7 +155,6 @@ int CAgent:: h(const stPoint& init, const stPoint& goal, CGridMap* gridmap)
 	if (h > (dimcompare / 3 * 2))return h;
 	if (h > (dimcompare / 3))return CustomMapDistance(init,goal,DimPoint);
 	return BFSDistance(init, goal, gridmap);
-
 }
 
 std::vector<int> CAgent::get_path()
